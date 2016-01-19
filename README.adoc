@@ -1,4 +1,3 @@
-[float]
 Getting Started
 ~~~~~~~~~~~~~~
 
@@ -67,7 +66,7 @@ NOTE: RESTful API 설계 가이드는 link:설계가이드url[RESTful API 설계
 * 예> 기상청으로부터 날씨정보를 받아오려면 OOO.jsp 파일로 부터 데이터를 추출하는 코드가 필요했습니다.
 
 .기존 Web Application의 형태
-image:doc/images/server_page_archi.png[기존 Web Application의 형태]
+image:../../images/api/server_page_archi.png[기존 Web Application의 형태]
 
 [[section1-2]]
 == 2. RESTful API Server
@@ -75,7 +74,7 @@ image:doc/images/server_page_archi.png[기존 Web Application의 형태]
 * 이제 다양한 Client들에 동일한 Data로 응답하기 위해 Webservice 아키텍처가 Web Application에도 적용됩니다.
 
 .RESTful Webservice API Server
-image:doc/images/api_server_archi.png[RESTful Webservice API Server]
+image:../../images/api/api_server_archi.png[RESTful Webservice API Server]
 
 
 // Page 구분
@@ -127,7 +126,7 @@ POST /user HTTP/1.1  +
 Conten-Type: application/json +
 { +
 {nbsp}{nbsp}{nbsp} "loginName":"anyframecloud", +
-{nbsp}{nbsp}{nbsp} "emailAddress":"anyframecloud@api.com", +
+{nbsp}{nbsp}{nbsp} "emailAddress":"cloud@api.com", +
 {nbsp}{nbsp}{nbsp} "firstName":"cloud", +
 {nbsp}{nbsp}{nbsp} "lastName":"anyframe" +
 } |
@@ -135,7 +134,7 @@ HTTP/1.1 201 CREATED  +
 { +
 {nbsp}{nbsp}{nbsp} "userId":"OOO", +
 {nbsp}{nbsp}{nbsp} "loginName":"anyframecloud", +
-{nbsp}{nbsp}{nbsp} "emailAddress":"anyframecloud@api.com" +
+{nbsp}{nbsp}{nbsp} "emailAddress":"cloud@api.com" +
 }
 
 |/user/{userId} |GET |
@@ -144,7 +143,7 @@ GET /user/{userId} HTTP/1.1
 HTTP/1.1 200 OK +
 { +
 {nbsp}{nbsp}{nbsp} "loginName":"anyframecloud", +
-{nbsp}{nbsp}{nbsp} "emailAddress":"anyframecloud@api.com", +
+{nbsp}{nbsp}{nbsp} "emailAddress":"cloud@api.com", +
 {nbsp}{nbsp}{nbsp} "firstName":"cloud", +
 {nbsp}{nbsp}{nbsp} "lastName":"anyframe" +
 }
@@ -662,7 +661,7 @@ NOTE: Window 사용자는 Git Bash로도 테스트가 가능합니다.
 ____
 
 2.Response::
-image:doc/images/curl_response.png[curl response]
+image:../../images/api/curl_response.png[curl response]
 
 
 
@@ -672,10 +671,10 @@ image:doc/images/curl_response.png[curl response]
 NOTE: Postman은 크롬 확장 어플리케이션 중 하나일 뿐 많은 RestAPI Test Tool이 존재합니다.(예> SOAP UI 등)
 
 1.Request URL 및 Header::
-image:doc/images/postman_header.png[Postman Header]
+image:../../images/api/postman_header.png[Postman Header]
 
 2.Request Body::
-image:doc/images/postman_payload.png[Postman RequestBody]
+image:../../images/api/postman_payload.png[Postman RequestBody]
 ____
 .RequestBody Payload
 [source, Json]
@@ -690,7 +689,7 @@ ____
 ____
 
 3.Response::
-image:doc/images/postman_response.png[Postman Response]
+image:../../images/api/postman_response.png[Postman Response]
 .. 응답코드 *_201 Created_* 를 확인할 수 있습니다.
 .. Application Console에 Log를 통해 정상적으로 API 호출이 이뤄진 것을 확인할 수 있습니다.
 
@@ -699,7 +698,7 @@ image:doc/images/postman_response.png[Postman Response]
 [[outro]]
 = Summary
 굉장히 간단한 Spring Boot 기반의 RESTfull API Server 구축을 실습했습니다. +
-link:doc/consuming_restful_api.adoc[다음 가이드]에서는 API 클라이언트로써 간단한 UI Application 개발을 실습해보도록 하겠습니다.
+link:./consuming_restful_api.adoc[다음 가이드]에서는 API 클라이언트로써 간단한 UI Application 개발을 실습해보도록 하겠습니다.
 
 [NOTE]
 .아직 가이드에 추가되지 않은 내용입니다.
