@@ -1,6 +1,7 @@
 package org.anyframe.cloud.rest.application.internal;
 
 import org.anyframe.cloud.rest.application.UserService;
+import org.anyframe.cloud.rest.application.exception.DuplicateLoginNameException;
 import org.anyframe.cloud.rest.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerUser(User newUser) {
         logger.info("$$$ registerUser - new user : ".concat(newUser.toString()));
+
+        if("admin".equals(newUser.getLoginName())){
+            throw new DuplicateLoginNameException("dup");
+        }
 
         newUser.setId("GeneratedID");
 
