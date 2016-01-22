@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -18,15 +18,14 @@ import java.util.Date;
  * Created by Hahn on 2016-01-21.
  */
 @ControllerAdvice(basePackageClasses  = UserController.class)
-public class UserControllerAdvice {
+public class UserControllerAdvice extends ResponseEntityExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(UserControllerAdvice.class);
 
 
     @ExceptionHandler(DuplicateLoginNameException.class)
-//    @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Duplicate loginName value")
     @ResponseBody
-    public ResponseEntity<?> duplicateLoginName(HttpServletRequest request, Throwable ex) {
+    ResponseEntity<?> duplicateLoginName(HttpServletRequest request, Throwable ex) {
 
         logger.error("[DuplicateLoginNameException] - LoginName is already in use.");
 

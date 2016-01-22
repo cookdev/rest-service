@@ -1,7 +1,7 @@
 Getting Started
 ~~~~~~~~~~~~~~
 
-Building RESTful API Server
+Building RESTful API Service
 ===========================
 
 == 목차
@@ -45,15 +45,15 @@ Building RESTful API Server
 
 [[intro]]
 == Introduce
-*Spring Boot 기반의 link:http://spring.io/understanding/REST[REST] API 서버 구축을 위한 레퍼런스 문서입니다.*
+*Spring Boot 기반의 link:http://spring.io/understanding/REST[REST] API 서비스 구축을 위한 레퍼런스 문서입니다.*
 
 NOTE: RESTful API 설계 가이드는 link:설계가이드url[RESTful API 설계 가이드]를 참조 바랍니다.
 
 === Features
-* Spring Boot를 이용하여 RESTful API Server를 구축합니다.
+* Spring Boot를 이용하여 RESTful API Service를 구축합니다.
 * API를 호출하는 다양한 Client의 Sample code를 제공합니다.
 * link:https://www.w3.org/TR/cors[CORS(Cross-Origin Resource Sharing)]를 위한 해결책이 있습니다.
-* 사용자 인증을 위해 link:http://oauth.net/2/[Oauth2.0] Client로써의 API Server를 구축합니다.
+* 사용자 인증을 위해 link:http://oauth.net/2/[Oauth2.0] Client로써의 API Service를 구축합니다.
 
 === Need
 * 약 15분의 시간
@@ -79,12 +79,12 @@ NOTE: RESTful API 설계 가이드는 link:설계가이드url[RESTful API 설계
 image:doc/images/server_page_archi.png[기존 Web Application의 형태]
 
 [[section1-2]]
-=== 2. RESTful API Server
+=== 2. RESTful API Service
 * Client가 더욱 다양해지고 Web표준이 정립되면서 UI와 Data가 분리되었습니다.
 * 이제 다양한 Client들에 동일한 Data로 응답하기 위해 Webservice 아키텍처가 Web Application에도 적용됩니다.
 
-.RESTful Webservice API Server
-image:doc/images/api_server_archi.png[RESTful Webservice API Server]
+.RESTful Webservice API Service
+image:doc/images/api_server_archi.png[RESTful Webservice API Service]
 
 
 // Page 구분
@@ -92,8 +92,8 @@ image:doc/images/api_server_archi.png[RESTful Webservice API Server]
 
 
 [[main2]]
-== Build REST API Server
-Spring Boot를 사용하여 손쉽게 API서버를 구축해 보겠습니다.
+== Build REST API Service
+Spring Boot를 사용하여 손쉽게 API 서비스를 구축해 보겠습니다.
 
 [[section2-1]]
 === 1. Clone Repository
@@ -120,8 +120,8 @@ mvn spring-boot:run
 
 
 [[section2-2]]
-=== 2. API 서버 개발하기1
-* 사용자 정보를 제공하는 API 서버를 개발 해보겠습니다.
+=== 2. API 서비스 개발하기1
+* 사용자 정보를 제공하는 API 서비스를 개발 해보겠습니다.
 * 본 섹션에서는 Spring Boot를 기반으로 최소 기능을 구현합니다.
 
 .제공할 자원(사용자 정보)
@@ -189,7 +189,7 @@ NOTE: API를 통해 서버의 자원을 제공한다는 관점에서 *Resource S
 	<packaging>jar</packaging>
 
 	<name>rest-service</name>
-	<description>Demo project for RESTful API Server</description>
+	<description>Demo project for RESTful API Service</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -716,8 +716,8 @@ image:doc/images/postman_response.png[Postman Response]
 
 
 [[section2-4]]
-=== 4. API 서버 개발하기2
-* 본 섹션에서는 API 서버가 가져야하는 필수 기능들에 대해 다루겠습니다.
+=== 4. API 서비스 개발하기2
+* 본 섹션에서는 API 서비스가 가져야하는 필수 기능들에 대해 다루겠습니다.
 * 기능 특성에 따라 일부는 본 가이드에서 분리되어 독립적으로 제공됩니다.
 
 
@@ -953,13 +953,94 @@ public class SampleError {
 .ControllerAdvice 생성하기
 [source, Java]
 ----
+package org.anyframe.cloud.rest.interfaces.rest;
+
+import org.anyframe.cloud.rest.application.exception.DuplicateLoginNameException;
+import org.anyframe.cloud.rest.interfaces.dto.SampleError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+
+@ControllerAdvice(basePackageClasses  = UserController.class)
+public class UserControllerAdvice extends ResponseEntityExceptionHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserControllerAdvice.class);
+
+
+    @ExceptionHandler(DuplicateLoginNameException.class)
+    @ResponseBody
+    ResponseEntity<?> duplicateLoginName(HttpServletRequest request, Throwable ex) {
+
+        logger.error("[DuplicateLoginNameException] - LoginName is already in use.");
+
+        HttpStatus status = HttpStatus.valueOf(409);
+
+        return new ResponseEntity<>(
+                new SampleError(new Date()
+                    , status.value()
+                    , "TEST00001"
+                    , ex.getMessage()
+                    , ex.getClass().getSimpleName())
+                , HttpStatus.valueOf(409));
+    }
+}
+----
+. 기존에 UserController에 있던 @ExceptionHandler 메소드를 삭제합니다.
+. @ControllerAdvice Class 생성
+.. 일반적으로 모든 @RequestMapping 방법에 적용되는 @ExceptionHandler, @InitBinder, 및 @ModelAttribute 방법을 정의하는데 사용됩니다.
+. @ExceptionHandler 메소드 구현
+.. ResponseEntityExceptionHandler를 상속하고 메소드에 @ResponseBody를 추가함으로써 Exception 처리 후 BasicErrorController를 거치지 않고 응답합니다.
+
+[TIP]
+====
+@ControllerAdvice 대신 오류 메시지 타입을 재정의하는 또 다른 방법으로는 @BasicErrorController를 상속하는 방법이 있습니다.
+====
+
+===== 4.(1).8) 오류처리 테스트
+
+. 서버를 구동합니다.(<<run_app>>)
+. curl 호출 방식을 통해 회원가입(POST /user) 요청
+
+.curl 요청
+[source, Shell]
+----
+curl -X POST http://localhost:8080/user \
+-H "Content-Type: application/json" \
+-d '{"loginName":"admin","emailAddress":"cloud@api.com","firstName":"cloud","lastName":"anyframe"}'
 ----
 
-
-
+.Response Body
+[source, Json]
+----
+{
+  "timestamp": 1453438312522,
+  "status": 409,
+  "errorCode": "TEST00001",
+  "error": "dup",
+  "exception": "DuplicateLoginNameException"
+}
+----
+NOTE: 응답 메시지 타입이 변경된 것을 확인할 수 있습니다.
 
 [[section2-4-2]]
 ==== 4.(2) CORS(Cross-Origin Resource Sharing)
+
+[[section2-4-3]]
+==== 4.(3) Ceal으로 보안 강화하기
+
+[[section2-4-4]]
+==== 4.(4) OAuth 2.0 클라이언트로서의 API Service
+
+[[section2-4-5]]
+==== 4.(5) Ceal으로 보안 강화하기
 
 
 
@@ -969,14 +1050,12 @@ public class SampleError {
 
 [[outro]]
 == Summary
-굉장히 간단한 Spring Boot 기반의 RESTfull API Server 구축을 실습했습니다. +
+굉장히 간단한 Spring Boot 기반의 RESTfull API Service 구축을 실습했습니다. +
 link:./consuming_restful_api.adoc[다음 가이드]에서는 API 클라이언트로써 간단한 UI Application 개발을 실습해보도록 하겠습니다.
 
 [NOTE]
 .아직 가이드에 추가되지 않은 내용입니다.
 ====
-* CORS(Cross-Origin Resource Sharing)
 * Security
 * Oauth2.0
-* Facade Layer
 ====
