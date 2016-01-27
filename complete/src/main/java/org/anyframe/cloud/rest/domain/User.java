@@ -1,14 +1,24 @@
 package org.anyframe.cloud.rest.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Created by Hahn on 2016-01-18.
  */
+@Entity
+@Table(name = "registered_user")
 public class User {
 
+    @Id
     private String id;
 
+    @Column(unique = true, nullable = false)
     private String loginName;
 
+    @Column(unique = true, nullable = false)
     private String emailAddress;
 
     private String firstName;

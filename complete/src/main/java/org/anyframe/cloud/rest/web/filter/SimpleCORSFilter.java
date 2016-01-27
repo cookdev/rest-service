@@ -1,4 +1,4 @@
-package org.anyframe.cloud.rest.interfaces.web.filter;
+package org.anyframe.cloud.rest.web.filter;
 
 import org.springframework.stereotype.Component;
 

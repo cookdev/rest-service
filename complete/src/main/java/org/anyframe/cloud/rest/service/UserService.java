@@ -1,4 +1,4 @@
-package org.anyframe.cloud.rest.application;
+package org.anyframe.cloud.rest.service;
 
 import org.anyframe.cloud.rest.domain.User;
 
@@ -10,4 +10,6 @@ public interface UserService {
     User registerUser(User newUser);
 
     User getUserById(String userId);
+
+    User getUserByLoginName(String loginName);
 }

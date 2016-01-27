@@ -1,4 +1,4 @@
-package org.anyframe.cloud.rest.interfaces.dto;
+package org.anyframe.cloud.rest.controller.dto;
 
 import java.util.Date;
 

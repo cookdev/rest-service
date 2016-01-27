@@ -1,4 +1,4 @@
-package org.anyframe.cloud.rest.interfaces.dto;
+package org.anyframe.cloud.rest.controller.dto;
 
 /**
  * Created by Hahn on 2016-01-18.

@@ -27,8 +27,8 @@
                         "lastName": this.model.lastName
                     }),{
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Accept': 'service/json',
+                        'Content-Type': 'service/json'
                     }
                 }).subscribe(function(response){
                     that.viewChange(response.json());
@@ -38,8 +38,8 @@
                 var that = this;
                 this.http.get('http://localhost:8081/user/'+data.loginName,{
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': ' application/json'
+                        'Accept': 'service/json',
+                        'Content-Type': ' service/json'
                     }
                 }).subscribe(function(response){
                     that.model = new app.User(response.json());
