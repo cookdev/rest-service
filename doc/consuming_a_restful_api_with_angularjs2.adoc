@@ -1,8 +1,8 @@
 Getting Started
 ~~~~~~~~~~~~~~
 
-Building RESTful API Service
-===========================
+Consuming a RESTful API Service with AngularJS2
+===================================================
 
 == 목차
 ..... *<<intro>>*
@@ -1034,13 +1034,13 @@ NOTE: 응답 메시지 타입이 변경된 것을 확인할 수 있습니다.
 ==== 4.(2) CORS(Cross-Origin Resource Sharing)
 
 [[section2-4-3]]
-==== 4.(3) Seal으로 보안 강화하기
+==== 4.(3) Ceal으로 보안 강화하기
 
 [[section2-4-4]]
 ==== 4.(4) OAuth 2.0 클라이언트로서의 API Service
 
 [[section2-4-5]]
-==== 4.(5) ??
+==== 4.(5) Ceal으로 보안 강화하기
 
 
 
@@ -1051,7 +1051,7 @@ NOTE: 응답 메시지 타입이 변경된 것을 확인할 수 있습니다.
 [[outro]]
 == Summary
 굉장히 간단한 Spring Boot 기반의 RESTfull API Service 구축을 실습했습니다. +
-link:./doc/consuming_a_restful_api_with_angularjs2.adoc[다음 가이드]에서는 API 클라이언트로써 간단한 UI Application 개발을 실습해보도록 하겠습니다.
+link:./consuming_restful_api.adoc[다음 가이드]에서는 API 클라이언트로써 간단한 UI Application 개발을 실습해보도록 하겠습니다.
 
 [NOTE]
 .아직 가이드에 추가되지 않은 내용입니다.

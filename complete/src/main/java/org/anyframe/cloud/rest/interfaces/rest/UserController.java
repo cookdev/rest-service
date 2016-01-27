@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Created by Hahn on 2016-01-18.
  */
-@RestController(value = "/user")
+@RestController
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -21,7 +21,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(method = {RequestMethod.POST})
+    @RequestMapping(value = "/user", method = {RequestMethod.POST})
     @ResponseStatus(HttpStatus.CREATED)
     public UserAccount registerUser(@RequestBody RegisteredUser registerUser) {
 
@@ -40,7 +40,7 @@ public class UserController {
         return userAccount;
     }
 
-    @RequestMapping(value={"/{userId}"}, method = {RequestMethod.GET})
+    @RequestMapping(value = "/user/{userId}", method = {RequestMethod.GET})
     @ResponseStatus(HttpStatus.OK)
     public RegisteredUser registerUser(@PathVariable(value = "userId") String userId) {
 
