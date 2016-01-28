@@ -60,6 +60,30 @@ public class UserController {
 
     }
 
+    @RequestMapping(value = "/user/{userId}", method = {RequestMethod.PUT})
+    @ResponseStatus(HttpStatus.OK)
+    public RegisteredUser modifyUser(@RequestBody RegisteredUser registerUser, @PathVariable(value = "userId") String userId) {
+
+        User modifyUser = dtoToDomain(registerUser);
+        modifyUser.setId(userId);
+
+        User user = userService.modifyUser(modifyUser);
+
+        RegisteredUser modifiedUser = domainToDto(user);
+
+        return modifiedUser;
+    }
+
+    @RequestMapping(value = "/user/{userId}", method = {RequestMethod.DELETE})
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@PathVariable(value = "userId") String userId) {
+
+        User deleteUser = new User();
+        deleteUser.setId(userId);
+
+        userService.deleteUser(deleteUser);
+    }
+
     private RegisteredUser domainToDto(User domain){
         RegisteredUser dto = new RegisteredUser(domain.getLoginName()
                 , domain.getEmailAddress()

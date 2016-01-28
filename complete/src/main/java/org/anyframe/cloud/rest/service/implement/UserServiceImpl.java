@@ -1,5 +1,6 @@
 package org.anyframe.cloud.rest.service.implement;
 
+import org.anyframe.cloud.rest.controller.dto.RegisteredUser;
 import org.anyframe.cloud.rest.domain.User;
 import org.anyframe.cloud.rest.repository.jpa.RegisteredUserJpaRepository;
 import org.anyframe.cloud.rest.service.UserService;
@@ -56,5 +57,27 @@ public class UserServiceImpl implements UserService {
         logger.info("$$$ getUserById - user : ".concat(registeredUser.toString()));
 
         return registeredUser;
+    }
+
+    @Override
+    public User modifyUser(User modifyUser) {
+
+        logger.info("$$$ modifyUser - userId : ".concat(modifyUser.getId()));
+
+        User modifiedUser = registeredUserRepository.save(modifyUser);
+
+        logger.info("$$$ modifyUser - modified user : ".concat(modifiedUser.toString()));
+
+        return modifiedUser;
+    }
+
+    @Override
+    public void deleteUser(User deleteUser) {
+
+        logger.info("$$$ deleteUser - userId : ".concat(deleteUser.getId()));
+
+        registeredUserRepository.delete(deleteUser.getId());
+
+        logger.info("$$$ deleteUser - deleted userId : ".concat(deleteUser.getId()));
     }
 }

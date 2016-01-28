@@ -1,5 +1,6 @@
 package org.anyframe.cloud.rest.service;
 
+import org.anyframe.cloud.rest.controller.dto.RegisteredUser;
 import org.anyframe.cloud.rest.domain.User;
 
 /**
@@ -12,4 +13,8 @@ public interface UserService {
     User getUserById(String userId);
 
     User getUserByLoginName(String loginName);
+
+    User modifyUser(User modifyUser);
+
+    void deleteUser(User deleteUser);
 }
