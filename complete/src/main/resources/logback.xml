@@ -19,7 +19,7 @@
 		<appender-ref ref="console" />
 	</logger>
 	
-	<logger name="org.anyframe.cloud.rest" level="DEBUG" additivity="false">
+	<logger name="org.anyframe.cloud.restservice" level="DEBUG" additivity="false">
 		<appender-ref ref="console" />
 	</logger>
 

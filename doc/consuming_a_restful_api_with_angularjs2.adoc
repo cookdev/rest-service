@@ -238,7 +238,7 @@ NOTE: Application을 쉽게 구동하기 위해서 **_spring-boot-maven-plugin_*
 .User.class
 [source, java]
 ----
-package org.anyframe.cloud.rest.domain;
+package org.anyframe.cloud.restservice.domain;
 
 public class User {
 
@@ -330,10 +330,10 @@ NOTE: 본 Sample Application은 Repository가 존재하지 않아 JPA관련 Anno
 .UserContoller.class
 [source, java]
 ----
-package org.anyframe.cloud.rest.controller.rest;
+package org.anyframe.cloud.restservice.controller.rest;
 
-import org.anyframe.cloud.rest.service.UserService;
-import org.anyframe.cloud.rest.controller.dto.RegisterUser;
+import org.anyframe.cloud.restservice.service.UserService;
+import org.anyframe.cloud.restservice.controller.dto.RegisterUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -383,9 +383,9 @@ NOTE: 본 샘플 Application에서는 Logging으로 대체하겠습니다.
 .UserService.class
 [source, java]
 ----
-package org.anyframe.cloud.rest.service;
+package org.anyframe.cloud.restservice.service;
 
-import org.anyframe.cloud.rest.domain.User;
+import org.anyframe.cloud.restservice.domain.User;
 
 public interface UserService {
 
@@ -399,10 +399,10 @@ public interface UserService {
 .UserServiceImpl.class
 [source, java]
 ----
-package org.anyframe.cloud.rest.service.implement;
+package org.anyframe.cloud.restservice.service.implement;
 
-import org.anyframe.cloud.rest.service.UserService;
-import org.anyframe.cloud.rest.domain.User;
+import org.anyframe.cloud.restservice.service.UserService;
+import org.anyframe.cloud.restservice.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -465,7 +465,7 @@ public class UserServiceImpl implements UserService {
 .RegisteredUser.class
 [source, java]
 ----
-package org.anyframe.cloud.rest.controller.dto;
+package org.anyframe.cloud.restservice.controller.dto;
 
 public class RegisteredUser {
 
@@ -537,7 +537,7 @@ public class RegisteredUser {
 .UserAccount.class
 [source, java]
 ----
-package org.anyframe.cloud.rest.controller.dto;
+package org.anyframe.cloud.restservice.controller.dto;
 
 public class UserAccount {
 
@@ -797,7 +797,7 @@ public void duplicateLoginName() {
 .DuplicateLoginNameException.class
 [source, java]
 ----
-package org.anyframe.cloud.rest.service.exception;
+package org.anyframe.cloud.restservice.service.exception;
 
 public class DuplicateLoginNameException extends RuntimeException {
 }
@@ -852,7 +852,7 @@ curl -X POST http://localhost:8081/user \
   "timestamp": 1453361729003,
   "status": 409,
   "error": "Conflict",
-  "exception": "org.anyframe.cloud.rest.service.exception.DuplicateLoginNameException",
+  "exception": "org.anyframe.cloud.restservice.service.exception.DuplicateLoginNameException",
   "message": "Duplicate loginName value",
   "path": "/user"
 }
@@ -881,7 +881,7 @@ Spring Boot Web Starter에 의해 기본 메시지 타입이 사용됐기 때문
 .Custom Error Type Class 생성하기
 [source, Java]
 ----
-package org.anyframe.cloud.rest.controller.dto;
+package org.anyframe.cloud.restservice.controller.dto;
 
 import java.util.Date;
 
@@ -953,10 +953,10 @@ public class SampleError {
 .ControllerAdvice 생성하기
 [source, Java]
 ----
-package org.anyframe.cloud.rest.controller.rest;
+package org.anyframe.cloud.restservice.controller.rest;
 
-import org.anyframe.cloud.rest.service.exception.DuplicateLoginNameException;
-import org.anyframe.cloud.rest.controller.dto.SampleError;
+import org.anyframe.cloud.restservice.service.exception.DuplicateLoginNameException;
+import org.anyframe.cloud.restservice.controller.dto.SampleError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

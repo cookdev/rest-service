@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.anyframe.cloud</groupId>
-	<artifactId>rest-service-ui</artifactId>
+	<artifactId>rest-service-ui-ng</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>ui</name>
-	<description>UI application for anyframe cloud rest-service sample</description>
+	<name>rest-service-ui-ng</name>
+	<description>UI application for anyframe cloud rest-service sample with Angular2</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
