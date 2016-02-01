@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -18,7 +18,7 @@ import java.util.Date;
  * Created by Hahn on 2016-01-21.
  */
 @ControllerAdvice(basePackageClasses  = UserController.class)
-public class UserControllerAdvice extends ResponseEntityExceptionHandler {
+public class UserControllerAdvice {
 
     private static final Logger logger = LoggerFactory.getLogger(UserControllerAdvice.class);
 
@@ -29,9 +29,9 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
         logger.error("[DataIntegrityViolationACException] - {}", ex.getMessage());
         HttpStatus status = null;
 
-        if("".equals(ex.getConstraintName())){
+//        if("".equals(ex.getConstraintName())){
             status = HttpStatus.valueOf(409);
-        }
+//        }
 
         return new ResponseEntity<>(
                 new SampleError(new Date()
