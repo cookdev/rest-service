@@ -1,7 +1,6 @@
-package org.anyframe.cloud.restservice.controller.rest;
+package org.anyframe.cloud.restservice.controller.advice;
 
 import org.anyframe.cloud.restservice.controller.dto.SampleError;
-import org.anyframe.cloud.restservice.controller.exception.DuplicatLoginNameException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

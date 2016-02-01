@@ -1,4 +1,4 @@
-package org.anyframe.cloud.restservice.controller.rest;
+package org.anyframe.cloud.restservice.controller;
 
 import org.anyframe.cloud.restservice.service.UserService;
 import org.anyframe.cloud.restservice.domain.User;
