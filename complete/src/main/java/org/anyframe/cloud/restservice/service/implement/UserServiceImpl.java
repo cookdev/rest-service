@@ -1,5 +1,6 @@
 package org.anyframe.cloud.restservice.service.implement;
 
+import org.anyframe.cloud.restservice.controller.exception.DuplicatLoginNameException;
 import org.anyframe.cloud.restservice.domain.User;
 import org.anyframe.cloud.restservice.repository.jpa.RegisteredUserJpaRepository;
 import org.anyframe.cloud.restservice.service.UserService;
@@ -7,6 +8,7 @@ import org.anyframe.cloud.restservice.util.IdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,7 +29,12 @@ public class UserServiceImpl implements UserService {
 
         newUser.setId(IdGenerator.generateId());
 
-        User registeredUser = registeredUserRepository.save(newUser);
+        User registeredUser = null;
+//        try{
+            registeredUser =  registeredUserRepository.save(newUser);
+//        }catch(DataIntegrityViolationException ex){
+//            throw new DuplicatLoginNameException();
+//        }
 
         logger.info("$$$ registerUser - registered user : ".concat(registeredUser.toString()));
 
