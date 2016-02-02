@@ -742,7 +742,7 @@ public interface RegisteredUserJpaRepository extends RegisteredUserRepository, J
 [[outro]]
 == Summary
 굉장히 간단한 Spring Boot 기반의 RESTfull API Service 구축을 실습했습니다. +
-link:./building_restful_api_service_2.adoc[다음 가이드]에서는
+link:building_restful_api_service_2.adoc[다음 가이드]에서는
 실제 솔루션에서 사용하기 위한 API Service 필수기능 구현에 대해 알아보도록 하겠습니다. +
 
-API 서비스 테스트 방법에 대해서는 link:./test_restful_api_service.adoc[Test 가이드]에서 확인 하실수 있습니다.
+API 서비스 테스트 방법에 대해서는 link:test_restful_api_service.adoc[Test 가이드]에서 확인 하실수 있습니다.

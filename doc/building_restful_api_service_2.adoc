@@ -37,7 +37,7 @@ Building RESTful API Service
 == Introduce
 *Spring Boot 기반의 link:http://spring.io/understanding/REST[REST] API 서비스 구축을 위한 레퍼런스 문서입니다.*
 
-NOTE: RESTful API 설계 가이드는 link:./restful_api_design.adoc[REST API 설계 가이드]를 참조 바랍니다.
+NOTE: RESTful API 설계 가이드는 link:restful_api_design.adoc[REST API 설계 가이드]를 참조 바랍니다.
 
 === Features
 * 오류처리에 대한 방법이 있습니다.
@@ -57,7 +57,7 @@ NOTE: RESTful API 설계 가이드는 link:./restful_api_design.adoc[REST API �
 
 [[main1]]
 == Add on REST API Service
-* link:./building_restful_api_service_1.adoc[REST API 개발 가이드1]을 통해 구축된 API 서비스에 필수 기능을 추가해 보도록 하겠습니다.
+* link:building_restful_api_service_1.adoc[REST API 개발 가이드1]을 통해 구축된 API 서비스에 필수 기능을 추가해 보도록 하겠습니다.
 * 기능 특성에 따라 일부는 본 가이드에서 분리되어 독립적으로 제공됩니다.
 
 
@@ -405,7 +405,7 @@ NOTE: 응답 메시지 타입이 변경된 것을 확인할 수 있습니다.
 
 [[outro]]
 == Summary
-link:./doc/consuming_a_restful_api_with_angularjs2.adoc[다음 가이드]에서는 API 클라이언트로써 간단한 UI Application 개발을 실습해보도록 하겠습니다.
+link:consuming_a_restful_api_with_angularjs2.adoc[다음 가이드]에서는 API 클라이언트로써 간단한 UI Application 개발을 실습해보도록 하겠습니다.
 
 [NOTE]
 .아직 가이드에 추가되지 않은 내용입니다.
