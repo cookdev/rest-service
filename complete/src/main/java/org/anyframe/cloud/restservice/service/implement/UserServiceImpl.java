@@ -1,6 +1,6 @@
 package org.anyframe.cloud.restservice.service.implement;
 
-import org.anyframe.cloud.restservice.controller.exception.DuplicatLoginNameException;
+import org.anyframe.cloud.restservice.controller.exception.UnavailableLoginNameException;
 import org.anyframe.cloud.restservice.domain.User;
 import org.anyframe.cloud.restservice.repository.jpa.RegisteredUserJpaRepository;
 import org.anyframe.cloud.restservice.service.UserService;
@@ -8,7 +8,6 @@ import org.anyframe.cloud.restservice.util.IdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,14 +26,13 @@ public class UserServiceImpl implements UserService {
 
         logger.info("$$$ registerUser - new user : ".concat(newUser.toString()));
 
+        if("admin".equals(newUser.getLoginName())){
+            throw new UnavailableLoginNameException("Unabailable loginName value");
+        }
+
         newUser.setId(IdGenerator.generateId());
 
-        User registeredUser = null;
-//        try{
-            registeredUser =  registeredUserRepository.save(newUser);
-//        }catch(DataIntegrityViolationException ex){
-//            throw new DuplicatLoginNameException();
-//        }
+        User registeredUser = registeredUserRepository.save(newUser);
 
         logger.info("$$$ registerUser - registered user : ".concat(registeredUser.toString()));
 
@@ -66,15 +64,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User modifyUser(User modifyUser) {
+    public void modifyUser(User modifyUser) {
 
         logger.info("$$$ modifyUser - userId : ".concat(modifyUser.getId()));
 
-        User modifiedUser = registeredUserRepository.save(modifyUser);
+        registeredUserRepository.save(modifyUser);
 
-        logger.info("$$$ modifyUser - modified user : ".concat(modifiedUser.toString()));
+        logger.info("$$$ modifyUser - modified user completed: ".concat(modifyUser.getId()));
 
-        return modifiedUser;
     }
 
     @Override
