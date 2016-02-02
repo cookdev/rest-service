@@ -1,8 +1,7 @@
 Getting Started
 ~~~~~~~~~~~~~~
 
-Consuming a RESTful API Service with AngularJS2
-===================================================
+= Consuming a RESTful API Service with AngularJS2
 
 == 목차
 ..... *<<intro>>*

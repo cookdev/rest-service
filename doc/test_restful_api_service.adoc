@@ -1,8 +1,7 @@
 Getting Started
 ~~~~~~~~~~~~~~
 
-Testing RESTful API Service
-===========================
+= Testing RESTful API Service
 
 == 목차
 ..... *<<intro>>*

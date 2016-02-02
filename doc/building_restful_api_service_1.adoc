@@ -1,8 +1,7 @@
 Getting Started
 ~~~~~~~~~~~~~~
 
-Building RESTful API Service
-===========================
+= Building RESTful API Service
 
 == 목차
 ..... *<<intro>>*
@@ -473,7 +472,6 @@ public class UserServiceImpl implements UserService {
 
 
 [[section2-2-6]]
-[id="dto",reftext="Data Transfer Object 작성하기"]
 ==== 2.(6) Data Transfer Object 작성하기
 * Sample Application의 패키지 구조는 크게 세가지로 나눌 수 있습니다.
   .. controller
@@ -690,11 +688,9 @@ public class UserController {
 * H2 Database connection에 대한 설정은 이미 완료가 되어 있습니다.
 * link:http://localhost:8081/console[H2 Console - http://localhost:8081/console]
 
-.H2 consle Login - Password 없음
-image:image_h2_console.png[H2 Console Login]
+image::image_h2_console.png[title="H2 consle Login - Password 없음"]
 
-.H2 consle Query
-image:image_h2_console_select.png[H2 Console Select Query]
+image::image_h2_console_select.png[title="H2 consle Query"]
 
 
 ===== 2.(7).1) *_org.anyframe.cloud.restservice.repository.RegisteredUserRepository_* Class 생성
