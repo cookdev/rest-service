@@ -107,7 +107,7 @@ Negotiation이라고 한다. +
 
 위의 구성 요소들을 바탕으로 REST 아키텍처에서 클라이언트가 'http://sampleweb.com/users/user001'라는 URI를 가진 User Resource를 조회하는 과정을 그림으로 표현하면 다음과 같다.
 
-image::http://70.121.244.190/gitnsam/anyframe/anyframe-support/raw/master/images/rest-architecture.PNG[title="REST Architecture"]
+image::image_rest-architecture.PNG[title="REST Architecture"]
 
 [[section2]]
 = 2. REST 설계의 주요 원칙
@@ -301,7 +301,7 @@ OAuth는 크게 용도에 따라 4가지 타입의 인증 방식을 제공한다
 ** 사용자의 공개키인 ID 정보는 사용자가 쉽게 알 수 있는 정보(예: e-mail 주소, IP 주소, 전화번호 등)로 선택하지만, 
 해당 ID에 대한 개인 비밀키는 KGC(Key Generation Center)라는 키 생성 기관에서 생성한다. KGC는 키를 생성하는 별도의 서버라고 생각하면 된다.
 
-image::http://70.121.244.190/gitnsam/anyframe/anyframe-support/raw/master/images/id-key-gen.png[title="ID 기반 암호시스템의 키 생성 방식"]
+image::image_id-key-gen.png[title="ID 기반 암호시스템의 키 생성 방식"]
 
 * SEAL의 동작방식은 다음과 같다.
 ** SEAL 클라이언트는 사용할 암호화 알고리즘을 선택하여 SealForClient 객체를 생성한다. (지원 알고리즘 : AES128(default), DES, 3DES)
