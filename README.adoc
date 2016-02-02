@@ -6,9 +6,9 @@ Building RESTful API Service
 
 == 목차
 . link:doc/restful_api_design.adoc[REST API 설계 가이드]
-. link:doc/building_restful_api_service1.adoc[REST API 개발 가이드1]
-. link:doc/building_restful_api_service2.adoc[REST API 개발 가이드2]
+. link:doc/building_restful_api_service_1.adoc[REST API 개발 가이드1]
+. link:doc/building_restful_api_service_2.adoc[REST API 개발 가이드2]
 . link:doc/test_restful_api_service.adoc[REST API 테스트 가이드]
-. link:doc/consuming_a_restful_api_with_jquery.adoc[API Client - jQuery]
-. link:doc/consuming_a_restful_api_with_afm.adoc[API Client - Anyframe Mobile]
-. link:doc/consuming_a_restful_api_with_angularjs2.adoc[API Client - AngularJs2]
+//. link:doc/consuming_a_restful_api_with_jquery.adoc[API Client - jQuery]
+//. link:doc/consuming_a_restful_api_with_afm.adoc[API Client - Anyframe Mobile]
+//. link:doc/consuming_a_restful_api_with_angularjs2.adoc[API Client - AngularJs2]
