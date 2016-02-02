@@ -1,0 +1,345 @@
+
+
+== REST API 설계 가이드
+
+
+== Index
+<<section1>>::
+<<section1-1>> +
+<<section1-2>> +
+<<section1-3>> +
+<<section2>>::
+<<section2-1>> +
+<<section2-2>> +
+<<section2-3>> +
+<<section2-4>> +
+<<section2-5>> +
+<<section2-6>> +
+<<section2-7>> +
+<<section2-8>> +
+<<section2-9>> +
+<<section3>>::
+<<section3-1>> +
+<<section3-2>> +
+<<section4>>::
+
+[[section1]]
+= 1.REST 아키텍처 소개
+[.lead]
+REST 아키텍처는 다음과 같은 요소들로 구성된다.
+
+[[section1-1]]
+=== Resource 
+REST에서 가장 중요한 개념은 바로 유일한 ID를 가지는 Resource가 서버에 존재하고, 클라이언트는 각 Resource
+의 상태를 조작하기 위해 요청을 보낸다는 것이다. 일반적으로 Resource는 User, Student, Product 등과 같은
+명사형의 단어이고, HTTP에서 이러한 Resource를 구별하기 위한 ID는 '/users/12456'와 같은 URI이다.
+명사형이 아닌 동사(Operation)형의 API 정의시에도 되도록이면 리소스 기반의 명사 형태로 정의를 하도록 한다.
+다음은 간단한 예제이다.
+
+** 사용자 생성 +
+다음은 http://sampleweb.com/users 라는 리소스를 이름은 honggildong, 주소는 seoul로 생성하는 정의이다.
+----
+HTTP Post, http://sampleweb.com/users/
+{  
+   "name":"honggildong",
+   "address":"seoul"
+}
+----
+** 사용자 조회 +
+다음은 http://sampleweb.com/users 라는 사용자 리소스 중에, id가 honggildong인 사용자 정보를 조회해오는 방식이다. 
+----
+HTTP Get, http://sampleweb.com/users/honggildong
+----
+** 사용자 정보 수정 +
+다음은 http://sampleweb.com/users 라는 사용자 리소스 중에, id가 honggildong인 사용자 정보를 수정하는 방식이다. 
+----
+HTTP PUT, http://sampleweb.com/users/honggildong
+{  
+   "address":"suwon"
+}
+----
+** 사용자 정보 삭제 +
+다음은 http://sampleweb.com/users 라는 사용자 리소스 중에, id가 honggildong인 사용자 정보를 삭제하는 방식이다. 
+----
+HTTP DELETE, http://sampleweb.com/users/honggildong
+----
+[[section1-2]]
+=== Method 
+* GET, DELETE 등과 같이 Resource를 조작할 수 있는 동사형의 단어를 Method라고 한다. 클라이언트는 URI를 이용
+해서 Resource를 지정하고 해당 Resource를 조작하기 위해서 Method를 사용한다. HTTP에서는 GET, POST, PUT,
+DELETE 등의 Method를 제공한다. POST,PUT,GET,DELETE는 각각의 CRUD 메서드에 대응된다.
+** POST : Create +
+주어진 표현에 기반을 두고 이 리소스 아래 새 리소스를 생성한다. 
+클라이언트가 POST로 추가하기 요청을 보내면 생성하길 원하는 리소스의 표현을 요청의 엔티티 바디에 담아 전달한다. +
+POST 요청에 대한 대표적인 Response로서의 Http Status 코드는 201(Created)이며, 새 리소스를 생성할 계획이나 아직은 만들지 않았음을 의미할 때 202(Accepted)를 리턴한다.
+** GET : Select +
+클라이언트는 GET 요청을 보내 URL로 식별하는 리소스의 표현을 받아온다. GET 요청은 리소스의 상태를 변경하지 않는다. +
+GET 요청에 대한 대표적인 Response로서의 Http Status 코드는 200(OK)이며, 요청한 리소스가 존재하지 않는 경우, 404(Not Found) 또는 410(Gone)의 에러 응답코드를 반환한다. +
+410(Gone)의 경우는 요청한 리소스가 영구적으로 삭제되었을 때 이 응답을 표시한다. 404(Not Found) 코드와 비슷하며 이전에 있었지만 더 이상 존재하지 않는 리소스에 대해 404 대신 사용하기도 한다.
+** PUT : Update +
+PUT 요청은 리소스의 상태를 변경할 때 보내는 요청이다. 클라이언트는 GET 요청으로 받은 표현을 수정하고 PUT 요청의 페이로드로 돌려보낸다.
+서버는 PUT 요청을 거절할 수 있으며, 서버가 PUT 요청을 수락하기로 결정하면 클라이언트가 표현으로 전달한 것에 맞춰 리소스 상태를 변경한다. +
+PUT 요청에 대한 대표적인 Response로서의 Http Status 코드는 200(OK)나 204(No Content)이다.
+** DELETE : Delete +
+제거하고 싶은 리소스가 있을 때 클라이언트는 DELETE 요청을 보낸다. +
+DELETE 요청에 대한 대표적인 Response로서의 Http Status 코드는 200(OK)나 204(No Content), 202(Accepted)이다.
++
+
+※ Idempotent::
+Idempotent는 여러 번 수행을 해도 결과가 같은 경우를 의미한다. 
+POST 연산의 경우에는 리소스를 추가하는 연산이기 때문에, Idempotent하지 않지만 나머지 GET, PUT, DELETE는 반복 수행해도 Idempotent하다. +
+REST는 각 개별 API를 상태없이 수행하게 되므로, 해당 REST API를 다른 API와 함께 호출하다가 실패하였을 경우, 트렌젝션 복구를 위해서 다시 실행해야 하는 경우가 있는데, 
+Idempotent 하지 않은 메서드들의 경우는 기존 상태를 저장했다가 다시 원복해줘야 하는 문제가 있지만, 
+Idempotent 한 메서드의 경우에는 반복적으로 다시 메서드를 수행해주면 된다.
++
+
+* 브라우저나 클라이언트 측의 제약사항으로 인해 HTTP Method로 PUT이나 DELETE를 사용할 수 없는 경우가 있다.   
+** 이러한 경우에는 HTTP Method로 POST를 사용하고, hidden 타입의 request parameter "*_method*"나, request header의 "*X-Http-Method-Override*" 에 해당하는 PUT, DELETE를
+정의한다. 
+** Request Header나 Parameter로 정의된 이 값들은 서버측의 Filter (예: Spring의 HiddenHttpMethodFilter)를 통해 실제 Http Method로 사용된다. 
+** Request Header로 정의할 지, Parameter로 정의할 지 여부는 해당 API Client 유형이나 특성에 따라 정한다. 
+
+[[section1-3]]
+=== Representation of Resource 
+클라이언트가 서버로 요청을 보냈을 때, 서버가 응답으로 보내주는 Resource의 상태를 Representation이라
+고 한다. REST에서 하나의 Resource는 여러 형태의 Representation으로 나타내어 질 수 있다. 이를 Content
+Negotiation이라고 한다. +
+
+위의 구성 요소들을 바탕으로 REST 아키텍처에서 클라이언트가 'http://sampleweb.com/users/user001'라는 URI를 가진 User Resource를 조회하는 과정을 그림으로 표현하면 다음과 같다.
+
+image::http://70.121.244.190/gitnsam/anyframe/anyframe-support/raw/master/images/rest-architecture.PNG[title="REST Architecture"]
+
+[[section2]]
+= 2. REST 설계의 주요 원칙
+
+[[section2-1]]
+=== Give every "thing" an ID 
+위에서 설명했듯이 모든 Resource에는 URI라고 하는 유일한 ID를 부여한다. 클라이언트는 URI를 이용해서 수많은
+Resource를 식별하므로 이 URI 설계를 위한 다음과 같은 Design Rule이 RESTful Web Services [http://oreilly.com/
+catalog/9780596529260]라는 책에서 소개되고 있다. 이는 많은 사람들이 그동안 RESTful 아키텍처를 적용하면서
+축적된 경험을 바탕으로 만들어진 URI 설계 가이드이다.
+
+** URI는 직관적으로 Resource를 인식할 수 있는 단어들로 구성할 것
+'/movies', '/products' 등과 같이 직관적으로 어떤 정보를 제공하는지 알 수 있도록 URI를 구성할 것을 가이드
+하고 있다. 
+
+** URI의 리소스명은 동사보다는 명사를 사용하고, Http Method로 CRUD(생성,조회,수정,삭제)를 정의한다. 
+*** Post : /getDogs -> Get : /dogs
+*** Post : /setDogsOwner -> Post : /dogs/{snoopy}/owner/{sally} 
+*** 의미상 단수형 명사보다는 복수형 명사를 사용하는 것이 의미상 표현하기가 더 좋다.
+
+** URI는 계층구조로 구성할 것
+'/hotels/hayatt/bookings/20101128'와 같이 URI path가 계층적인 구조를 가지도록 구성하는 것이 좋다.
+** URI의 상위 path는 하위 path의 집합을 의미하는 단어로 구성할 것
+'/hotels/hayatt/bookings/20101128'와 같이 'hotels'는 'hayatt'의 집합이므로 '/hotels' 만으로도 호텔목록이라
+는 정보를 제공할 수 있는 유효한 URI가 된다.
+
+** 리소스간의 관계가 계층구조로 표현하기 어렵다면, 관계명을 명시적으로 표현하는 방법이 있다. 
+예를 들어 '사용자'가 '좋아하는' '영화' 목록은 다음과 같이 표현할 수 있다. 
+*** HTTP Get : /users/sally/likes/movies 
+
+이 외에도 여러가지 가이드들이 존재하지만 특징적인 것들만 나열하였다.
+위와 같은 가이드에 맞춰 URI를 만들면 '/hotels/hilton', '/hotels/hayatt' 처럼 비슷한 패턴의 URI가 많이 생성된다.
+이런 URI를 쉽게 관리할 수 있도록 URI를 추상화할 수 있도록 도와주는 것이 URI Template이다. URI Template은 '/
+movies/{movieId}'와 같이 하나 이상의 변수를 포함하고 있는 URI 형식의 문자열이다. URI Template에 대한 자세한
+내용은 proposed RFC [http://tools.ietf.org/html/draft-gregorio-uritemplate-04]를 참조하기 바란다.
+
+[[section2-2]]
+=== Link things together 
+하나의 Resource는 여러 개의 다른 Resource 정보를 포함할 수 있다. 아래 예에서 보는 것 처럼 Order는 Product와
+Customer를 포함하고 있어서 Order정보 조회 요청에 대한 응답으로 전달된 Representation에 Product와 Customer
+에 대한 link가 포함되어있다. Representation이 다른 Resource에 대한 URI를 link로 포함하기 때문에 필요에 따라 클
+라이언트가 추가적인 정보를 조회할 수 있다. 이 개념은 'HATEOAS(Hypermedia As The Engine Of Application State)
+라는' 용어로도 많이 표현된다.
+클라이언트는 'Order'라는 Resource에 대한 Representation을 전달받았고, 필요에 따라 'Product'나 'Customer'의 정
+보를 다시 요청하면 된다. 즉, 서버에서는 또 다른 State로 전환할 수 있는 Resource의 link를 전달하기만 하고, 전
+환되어야 할 State의 순서를 지정하지는 않는다.
+----
+{  
+   "amount":"23",
+   "links":[  
+      {  
+         "rel":"product",
+         "href":"http://example.com/products/4554"
+      },
+	  {  
+         "rel":"customer",
+         "href":"http://example.com/customers/1234"
+      }
+   ]
+}
+----
+
+[[section2-3]]
+=== Use standard methods 
+Resource에 대한 CRUD 조작을 위해서 HTTP에서 제공하는 standard method를 사용할 것을 권장한다. 클라이언트
+가 서버의 Movie를 삭제하기 위해서 기존에는 '/movies.do?id=MV-00001&method=delete'와 같은 방식으로 요청했
+다면, REST에서는 '/movies/MV-00001'라는 URI와 HTTP의 DELETE method의 조합으로 요청할 수 있다.
+
+
+[[section2-4]]
+=== Exception Handling
+에러처리의 기본은 HTTP Response Code를 사용한 후, Response body에 error detail을 서술한다. 
+여러 개의 response code를 사용하면 명시적이긴 하지만, 코드 관리가 어렵기 때문에 아래와 같이 몇가지 response code만을 사용하는 것을 권장한다.
+
+** 200 OK
+** 201 Created - 리소스 생성 성공 시 
+** 400 Bad Request - field validation 실패시
+** 401 Unauthorized - API 인증,인가 실패
+** 404 Not found - 해당 리소스가 없음
+** 500 Internal Server Error - 서버 에러
+
+HTTP response code에 대한 전체 내용은  http://en.wikipedia.org/wiki/Http_error_codes 문서를 참고한다. +
+에러에 대한 세부적인 내용은 http body에 정의한다. 
+
+----
+HTTP Status 401
+{
+		"errorCode": 4012,
+		"message" : "LoginId does not exist or password does not match"
+}
+----
+
+에러의 Stack 정보는 내부적인 코드 구조와 프레임워크 구조를 포함하므로, API 에러 메시지에 에러의 스택 정보는 포함시키지 않는다. +
+그렇지만, 내부 개발중이거나 디버깅 시에는 매우 유용한데, API 서비스를 개발시, 서버의 모드를 production과 dev 모드로 분리해서, 
+옵션에 따라 dev 모드등으로 기동시, REST API의 에러 응답 메세지에 에러 스택 정보를 포함해서 리턴하도록 하면, 디버깅에 매우 유용하게 사용할 수 있다.
+
+[[section2-5]]
+=== API 버전관리 
+API 정의에서 중요한 것중의 하나는 버전 관리이다. 이미 배포된 API 의 경우에는 계속해서 서비스를 제공하면서,
+새로운 기능이 들어간 새로운 API를 배포할때는 하위 호환성을 보장하면서 서비스를 제공해야 하기 때문에, 
+같은 API라도 버전에 따라서 다른 기능을 제공하도록 하는 것이 필요하다.
+
+----
+{servicename}/{version}/{REST URL}
+ex) www.myservcie.com/v2/movies
+----
+
+[[section2-6]]
+=== 페이징 처리  
+큰 사이즈의 리스트 형태의 응답을 처리하기 위해서는 페이징 처리와 partial response 처리가 필요하다.
+리턴되는 리스트 내용이 1,000,000개인데, 이를 하나의 HTTP Response로 처리하는 것은 서버 성능, 네트워크 비용도 문제지만 무엇보다 비현실적이다. 
+100번째 레코드부터 125번째 레코드까지 받는 API 정의는 다음과 같다.  
+----
+/record?offset=100&limit=25
+----
+100번째 레코드 부터 25개의 레코드를 출력한다.
+
+[[section2-7]]
+=== 부분 응답 처리 (컬럼 필터링)
+리소스에 대한 응답 메세지에 대해서 굳이 모든 필드를 포함할 필요가 없는 케이스가 있다. 
+API를 요청하는 Client의 용도에 따라 선별적으로 몇가지 필드만이 필요한 경우가 있다. 필드를 제한하는 것은 
+전체 응답의 양을 줄여서 네트워크 대역폭(특히 모바일에서) 절약할 수 있고, 응답 메세지를 간소화하여 파싱등을 간략화할 수 있다.
+부분 응답(Partial Response) 처리는 다음과 같이 표현한다. 
+----
+/user?field=name,email
+----
+
+[[section2-8]]
+=== Resources with multiple representations
+HTTP 기반의 REST에서 클라이언트는 자신이 처리할 수 있는 Format으로 Representation을 달라고 서버에게 요청
+할 수 있다. Request message의 Accept header에 클라이언트가 처리할 수 있는 Format을 명시하여 서버로 요청
+을 보내면 된다. 예를 들어, 아래의 HTTP Request는 "'MV-00005'라는 ID를 가진 영화의 상세 정보를 XML 형태로
+줘"라는 의미가 된다.
+----
+GET /mypjt2/springrest/movies/MV-00005 HTTP/1.1
+Accept:application/xml, text/xml, application/*+xml
+User-Agent:Java/1.5.0_22
+Host:example.com
+Connection:keep-alive
+{Entity Body}
+----
+위의 요청을 받은 서버는 응답으로 다음과 같은 Response Message를 전달할 것이다. 
+----
+HTTP/1.1 200OK
+Server:Apache-Coyote/1.1
+Content-Type:application/xml
+Content-Language:ko-KR
+Content-Length:432
+Date:Wed, 01 Dec 2010 01:18:52 GMT
+
+<?xml version="1.0" encoding="UTF-8"
+standalone="yes"?><movie><actors>Jay Baruchel</actors>
+<director>Jim Field Smith</director>...</movie>
+----
+Accept header에 다른 Format을 명시하면 서버는 다른 형태의 응답을 전달할 것이다.
+이와 같이 하나의 Resource는 여러개의 Representation을 가질 수 있다. 이를 Content Negotiation이라고 한다. +
+일반적인 브라우저에서는 Accept Header 값을 고정하여 전송하기 때문에, Accept Header 값을 기반으로 한 Content Negotiation이 
+불가능하다. 그래서 이러한 경우, URL path에 확장자를 붙여, 확장자를 통해 클라이언트가 원하는 Representation을 표시하는 방법을 사용할 수 있다. 
+예를 들어, '/myapp/movies.pdf' 라는 요청이 들어오면 서버는 영화목록을 찾아서 PDF View로 클라이언트에게 전달하는 것이다. 
+
+[[section2-9]]
+=== Communicate statelessly
+REST에서 서버는 클라이언트로 부터 들어오는 각 요청에 대한 상태를 저장하지 않도록 권장한다. 요청이 처리되기
+위해서 필요한 모든 정보는 반드시 요청에 포함하도록 해야한다. 서버는 클라이언트 관련 정보를 저장할 필요가 없
+으므로 클라이언트의 수의 증가에도 시스템이 유연하게 대응할 수 있다.
+
+[[section3]]
+= 3. API 인증과 보안
+
+[[section3-1]]
+=== OAuth 기반 인증(Authentication)
+OAuth는 근래에 가장 많이 사용되는 API 인가/인증 기술이다. 특징중의 하나는 Authentication(인증)만이 아니라 권한에 대한 통제(Authorization)이 가능하다는 특징을 가지고 있으며, 3 legged 인증을 통해서, 파트너사가 API를 사용할 경우, 인증시에 사용자 ID와 비밀번호를 파트너에게 노출하지 않을 수 있는 장점이 있다. (페이스북 계정을 이용한 웹 애플리케이션들을 보면 가끔, 페이스북 로그인 화면으로 리다이렉트되어 “XX 애플리케이션이 XX에 대한 권한을 요청합니다. 수락하시겠습니까?”와 같은 창이 뜨는 것을 볼 수 있는데, 페이스북 로그인 화면에, 사용자 ID와 비밀 번호를 넣고 페이스북은 인증이 되었다는 정보를 인증을 요청한 웹애플리케이션으로 보내서, 해당 사용자가 인증되었음을 알려준다. 이경우, 웹 애플리케이션은 사용자의 비밀번호를 알 수 없다. )
+기본적인 OAuth의 원리는, 사용자 ID/PASSWD로 인증을 한 후에, access_token을 받아서, access_token을 이용해서 추후 커뮤니케이션을 하는 방식이다.
+OAuth는 크게 용도에 따라 4가지 타입의 인증 방식을 제공한다.
+
+** Authorization Code 방식 - 주로 웹 애플리케이션 인증에 유리하며, 위에서 설명한 케이스와 같이 웹을 통해서 Redirect 하는 방식이다.
+** Implicit 방식 - 자바스크립트 기반의 애플리케이션이나 모바일 애플리케이션 처럼 서버 백엔드가 없는 경우 사용한다.
+** Resource Owner password credential 방식 - 인증을 요청하는 클라이언트에서 직접 ID와 PASSWD를 보내는 방식으로, (이 경우 위의 방식들과 다르게 서비스 제공자의 로그인창으로 리다이렉션이 필요 없다.) 클라이언트가 직접 ID,PASSWD를 받기 때문에, 클라이언트에 사용자의 비밀번호가 노출될 수 있어서 서버와 클라이언트를 같은 회사에서 제작한 경우나, 사용자의 정보를 공유해도 되는 1’st party 파트너등과 같은 경우에 사용한다.
+** Client Credential 방식 - 일반적인 애플리케이션 Access에 사용한다.
+
+일반적으로 API를 3’rd party에 제공할 경우에는 Authorization Code 방식을, 자사의 API를 자사나 1’st party 파트너만 사용할 경우에는 Resource Owner password credential 방식이 좋다.
+
+[[section3-2]]
+=== 암호화 
+본 설계 가이드에서는 SDS 자체 개발기술인 SEAL 기반의 암호화 기법에 대해 설명한다. 
+
+* SEAL은 기본적으로 ID 기반의 암호화 방식으로 S-IBE(SDS Identity-Based Encryption)를 기반으로 설계된 인증된 키 교환 방식이다.
+* ID 기반 암호화란 RSA 인증서 기반의 세션키 협상방법과 달리 사용자가 쉽게 기억할 수 있는 클라이언트와 서버의 ID와 패스워드를 
+이용한 양방향 인증을 제공한다. 
+* ID 기반 암호 시스템의 키 발급 방식은 다음 그림과 같다. 
+** 사용자의 공개키인 ID 정보는 사용자가 쉽게 알 수 있는 정보(예: e-mail 주소, IP 주소, 전화번호 등)로 선택하지만, 
+해당 ID에 대한 개인 비밀키는 KGC(Key Generation Center)라는 키 생성 기관에서 생성한다. KGC는 키를 생성하는 별도의 서버라고 생각하면 된다.
+
+image::http://70.121.244.190/gitnsam/anyframe/anyframe-support/raw/master/images/id-key-gen.png[title="ID 기반 암호시스템의 키 생성 방식"]
+
+* SEAL의 동작방식은 다음과 같다.
+** SEAL 클라이언트는 사용할 암호화 알고리즘을 선택하여 SealForClient 객체를 생성한다. (지원 알고리즘 : AES128(default), DES, 3DES)
+** SealForClient 객체를 사용하여 세션키 협상 요청 메시지를 생성한다. 기본적으로 사용자의 ID와 (해쉬된) 패스워드 정보가 서버로
+전달되어야 하며, 부가정보가 필요할 경우 extraParam를 사용하여 전달한다.
+** SEAL 클라이언트로부터 세션키 협상요청 메시지가 전달되면, SEAL 서버내에서 세션키가 생성되고, 클라이언트에서도
+똑같은 세션키를 계산할 수 있도록 고안된 세션키 협상응답 메시지를 리턴한다.
+** SEAL 서버로부터 전달된 세션키 협상응답 메시지를 기반으로 SEAL 클라이언트에서도 SealForClient 객체를 사용하여 서버와 동일한 세션키가 생성된다. 
+** 세션키 생성이 완료되면 SealForClient 객체를 사용하여 서버로 전달할 메시지를 암호화한다.
+** 클라이언트에서 세션키 협상응답 메시지를 전달한 뒤, 클라이언트로부터 첫번째 암호화된 메시지가 도착하면 서버는 세션키 협상이 완료되었다고 
+판단하고, 세션키 협상이 성공하면 클라이언트로 부터 수신한 메시지를 복호화한다.
+** 클라이언트로 보낼 메시지도 키 기반으로 암호화한다.
+
+
+
+
+
+
+[[section4]]
+= 4. REST API 설계 요약 
+
+* HTTP Method는POST(create), GET(read), PUT(update), DELETE(delete)만 사용한다.
+* URL Format : /{API_VERSION}/{Resource(Collection)}/{Resource(Element)}
+** POST /v1/movies : 신규 영화정보 생성
+** GET /v1/movies : 영화 목록 조회
+** GET /v1/movies/{movie id} : movie 단건상세조회
+** PUT /v1/movies/{movie id} : movie 수정, 없으면 404 error return(create 하지않음)
+** DELETE /v1/movies/{movies id} : movie 삭제
+* {Resource(Collection)}는 기본적으로 복수명사를 사용하여 작성한다.
+* 기본요청, 응답데이터 Type은 JSON 형식으로 작성한다.
+* Paging등 조건 요청 시에는 파라미터별로 &로 구분하여 요청한다.
+** /v1/movies?offset=100&limit=25
+* 부분데이터(컬럼필터링)요청 시에는 컬럼명을(,)로 구분하여 요청한다.
+** ex) /v1/users?field=name,email
+* 오류코드는 HTTP Status 코드로 리턴하고,상세오류코드와 메시지를 추가로 제공한다.
+* Message Body
+** JSON Format
+** Field명: 소문자를 사용하고, 두단어 이상 조합 시에는 CamelCase로 표기한다. (해당 도메인 객체의 변수명과 동일하게 정의한다.)
+
+
+
