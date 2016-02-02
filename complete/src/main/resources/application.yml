@@ -2,9 +2,9 @@ server:
   port: 8081
 
 spring:
-  dao:
-    exceptiontranslation:
-      enabled: false
+#  dao:
+#    exceptiontranslation:
+#      enabled: false
   h2:
     console:
       enabled: true
