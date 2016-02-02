@@ -8,32 +8,22 @@ Building RESTful API Service
 ..... *<<intro>>*
 
 ..... *<<main1>>*
+
         <<section1-1>>::
-        
+            <<section1-1-1>> +
+            <<section1-1-2>> +
+			<<section1-1-3>> +
+			<<section1-1-4>> +
+			<<section1-1-5>> +
+			<<section1-1-6>> +
+			<<section1-1-7>> +
+			<<section1-1-8>>
+
         <<section1-2>>::
 
-..... *<<main2>>*
-        <<section2-1>>::
-			<<section2-1-1>>
+        <<section1-3>>::
 
-        <<section2-2>>::
-            <<section2-2-1>> +
-            <<section2-2-2>> +
-			<<section2-2-3>> +
-			<<section2-2-4>> +
-			<<section2-2-5>> +
-			<<section2-2-6>>
-
-        <<section2-3>>::
-            <<section2-3-1>> +
-            <<section2-3-2>> +
-            <<section2-3-3>>
-
-        <<section2-4>>::
-            <<section2-4-1>> +
-            <<section2-4-2>> +
-			<<section2-4-3>> +
-			<<section2-4-4>>
+        <<section1-4>>::
 
 ..... *<<outro>>*
 
@@ -47,9 +37,10 @@ Building RESTful API Service
 == Introduce
 *Spring Boot 기반의 link:http://spring.io/understanding/REST[REST] API 서비스 구축을 위한 레퍼런스 문서입니다.*
 
-NOTE: RESTful API 설계 가이드는 link:설계가이드url[RESTful API 설계 가이드]를 참조 바랍니다.
+NOTE: RESTful API 설계 가이드는 link:./restful_api_design.adoc[REST API 설계 가이드]를 참조 바랍니다.
 
 === Features
+* 오류처리에 대한 방법이 있습니다.
 * link:https://www.w3.org/TR/cors[CORS(Cross-Origin Resource Sharing)]를 위한 해결책이 있습니다.
 * 사용자 인증을 위해 link:http://oauth.net/2/[Oauth2.0] Client로써의 API Service를 구축합니다.
 
@@ -66,19 +57,16 @@ NOTE: RESTful API 설계 가이드는 link:설계가이드url[RESTful API 설계
 
 [[main1]]
 == Add on REST API Service
-Spring Boot를 사용하여 손쉽게 API 서비스를 구축해 보겠습니다.
-
-
-[[section1-1]]
-=== 1. API 서비스 개발하기2
-* 본 섹션에서는 API 서비스가 가져야하는 필수 기능들에 대해 다루겠습니다.
+* link:./building_restful_api_service_1.adoc[REST API 개발 가이드1]을 통해 구축된 API 서비스에 필수 기능을 추가해 보도록 하겠습니다.
 * 기능 특성에 따라 일부는 본 가이드에서 분리되어 독립적으로 제공됩니다.
 
 
-[[section2-4-1]]
-==== 4.(1) 에러 처리하기
+[[section1-1]]
+=== 1. 에러 처리하기
 
-===== 4.(1).1) Http Status Code
+
+[[section1-1-1]]
+==== 1.(1) Http Status Code
 * 에러를 다루기 이전에 RESTful 하게 주요 HTTP 상태코드에 대해서 알아보겠습니다.
 * API의 응답코드로 사용될만한 코드를 중심으로 소개하겠습니다.
 
@@ -99,7 +87,10 @@ Spring Boot를 사용하여 손쉽게 API 서비스를 구축해 보겠습니다
 NOTE: link:http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml[공식사이트]의 상세 Spec을 통해 상황에 따라 적합한 상태코드를 찾아보세요.
 
 
-===== 4.(1).2) Business Exception 설계
+
+
+[[section1-1-2]]
+==== 1.(2) Business Exception 설계
 
 [NOTE]
 ====
@@ -115,19 +106,21 @@ Business Exception 설계는 API 설계 시 완료되어야 하는 부분이지�
 회원가입 시 admin이라는 loginName으로 등록 경우 LoginName 중복 오류 발생
 
 * *POST /user*
-* Exception: *DuplicateLoginNameException*
-* HTTP Staus Code: *209 Conflict*
+* Exception: *UnavailableLoginNameException*
+* HTTP Staus Code: *400 Bad Request*
 * Response:
 [source, json]
 {
    "timestamp": 1453350197105,
-   "status": 209,
-   "error": "Duplicate loginName value",
+   "status": 400,
+   "error": "Unabailable loginName value",
    "errorCode": "TEST0001"
-   "exception": "DuplicateLoginNameException"
+   "exception": "UnavailableLoginNameException"
 }
 
-===== 4.(1).3) ExceptionHandler 등록
+
+[[section1-1-3]]
+==== 1.(3) ExceptionHandler 등록
 [NOTE]
 ====
 아래의 내용은 Spring 3.x 이하의 버전의 ExceptionHandler와 동일한 기능을 수행합니다. +
@@ -138,22 +131,28 @@ Business Exception 설계는 API 설계 시 완료되어야 하는 부분이지�
 [source, java]
 ----
 // 생략
-@ExceptionHandler(DuplicateLoginNameException.class)
-@ResponseStatus(value = HttpStatus.CONFLICT, reason = "Duplicate loginName value")
-public void duplicateLoginName() {
-    logger.error("[DuplicateLoginNameException] - LoginName is already in use.");
+@ExceptionHandler(UnavailableLoginNameException.class)
+@ResponseStatus(value = HttpStatus.CONFLICT, reason = "Unabailable loginName value")
+public void unavailableLoginName() {
+    logger.error("[UnavailableLoginNameException] - the loginName is unavailable.");
 }
 // 생략
 ----
 
-===== 4.(1).4) DuplicateLoginNameException Class 생성
 
-.DuplicateLoginNameException.class
+
+[[section1-1-4]]
+==== 1.(4) UnavailableLoginNameException Class 생성
+
+.UnavailableLoginNameException.class
 [source, java]
 ----
-package org.anyframe.cloud.rest.application.exception;
+package org.anyframe.cloud.restservice.controller.exception;
 
-public class DuplicateLoginNameException extends RuntimeException {
+public class UnavailableLoginNameException extends RuntimeException {
+    public UnavailableLoginNameException(String msg) {
+        super(msg);
+    }
 }
 ----
 .. application package 하위에 exception package에 생성합니다.
@@ -161,7 +160,8 @@ public class DuplicateLoginNameException extends RuntimeException {
 
 NOTE: Exception Class 생성 시 패키지나, 부모클래스, 구현내용 등은 솔루션 표준에 의거 작성하면 됩니다.
 
-===== 4.(1).5) Business Logic 추가
+[[section1-1-5]]
+==== 1.(5) Business Logic 추가
 
 .UserServiceImpl.class
 [source, java]
@@ -169,26 +169,29 @@ NOTE: Exception Class 생성 시 패키지나, 부모클래스, 구현내용 등
 // 생략
 @Override
 public User registerUser(User newUser) {
+
     logger.info("$$$ registerUser - new user : ".concat(newUser.toString()));
 
     if("admin".equals(newUser.getLoginName())){
-        throw new DuplicateLoginNameException();
+        throw new UnavailableLoginNameException("Unabailable loginName value");
     }
 
-    newUser.setId("GeneratedID");
+    newUser.setId(IdGenerator.generateId());
 
-    User registeredUser = newUser;
+    User registeredUser = registeredUserRepository.save(newUser);
+
     logger.info("$$$ registerUser - registered user : ".concat(registeredUser.toString()));
 
     return registeredUser;
 }
 // 생략
 ----
-.. DuplicateLoginNameException 발생을 위해 "admin"과 비교하는 if문을 작성합니다.
+.. UnavailableLoginNameException 발생을 위해 "admin"과 비교하는 if문을 작성합니다.
 
-===== 4.(1).6) 오류처리 테스트
+[[section1-1-6]]
+==== 1.(6) 오류처리 테스트
 
-. 서버를 구동합니다.(<<run_app>>)
+. 서버를 구동합니다.(link:doc/test_restful_api_service.adoc[REST API 테스트 가이드])
 . curl 호출 방식을 통해 회원가입(POST /user) 요청
 
 .curl 요청
@@ -206,8 +209,8 @@ curl -X POST http://localhost:8081/user \
   "timestamp": 1453361729003,
   "status": 409,
   "error": "Conflict",
-  "exception": "org.anyframe.cloud.rest.application.exception.DuplicateLoginNameException",
-  "message": "Duplicate loginName value",
+  "exception": "org.anyframe.cloud.rest.application.exception.UnavailableLoginNameException",
+  "message": "Unabailable loginName value",
   "path": "/user"
 }
 ----
@@ -228,14 +231,15 @@ Spring Boot Web Starter에 의해 기본 메시지 타입이 사용됐기 때문
 
 
 
-===== 4.(1).7) Error Type Customizing
+[[section1-1-7]]
+==== 1.(7) Error Type Customizing
 
 * 최초 설계하였던 오류메시지 형식에 맞도록 Customizing 해보겠습니다.
 
 .Custom Error Type Class 생성하기
 [source, Java]
 ----
-package org.anyframe.cloud.rest.interfaces.dto;
+package org.anyframe.cloud.restservice.controller.dto;
 
 import java.util.Date;
 
@@ -307,10 +311,10 @@ public class SampleError {
 .ControllerAdvice 생성하기
 [source, Java]
 ----
-package org.anyframe.cloud.restservice.controller.rest;
+package org.anyframe.cloud.restservice.controller.advice;
 
-import org.anyframe.cloud.restservice.service.exception.DuplicateLoginNameException;
 import org.anyframe.cloud.restservice.controller.dto.SampleError;
+import org.anyframe.cloud.restservice.controller.exception.UnavailableLoginNameException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -323,27 +327,26 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
-@ControllerAdvice(basePackageClasses  = UserController.class)
+@ControllerAdvice(basePackages = "org.anyframe.cloud.restservice.controller")
 public class UserControllerAdvice extends ResponseEntityExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(UserControllerAdvice.class);
 
-
-    @ExceptionHandler(DuplicateLoginNameException.class)
+    @ExceptionHandler(UnavailableLoginNameException.class)
     @ResponseBody
-    ResponseEntity<?> duplicateLoginName(HttpServletRequest request, Throwable ex) {
+    ResponseEntity<?> unavailableLoginName(HttpServletRequest request, Throwable ex) {
 
-        logger.error("[DuplicateLoginNameException] - LoginName is already in use.");
+        logger.error("[UnavailableLoginNameException] - the loginName is unavailable.");
 
-        HttpStatus status = HttpStatus.valueOf(409);
+        HttpStatus status = HttpStatus.valueOf(400);
 
         return new ResponseEntity<>(
                 new SampleError(new Date()
-                    , status.value()
-                    , "TEST00001"
-                    , ex.getMessage()
-                    , ex.getClass().getSimpleName())
-                , HttpStatus.valueOf(409));
+                        , status.value()
+                        , "TEST00001"
+                        , ex.getMessage()
+                        , ex.getClass().getSimpleName())
+                , status);
     }
 }
 ----
@@ -358,9 +361,10 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
 @ControllerAdvice 대신 오류 메시지 타입을 재정의하는 또 다른 방법으로는 BasicErrorController를 상속하는 방법이 있습니다.
 ====
 
-===== 4.(1).8) 오류처리 테스트
+[[section1-1-8]]
+==== 1.(8) 오류처리 테스트
 
-. 서버를 구동합니다.(<<run_app>>)
+. 서버를 구동합니다.(link:doc/test_restful_api_service.adoc[REST API 테스트 가이드])
 . curl 호출 방식을 통해 회원가입(POST /user) 요청
 
 .curl 요청
@@ -375,26 +379,23 @@ curl -X POST http://localhost:8081/user \
 [source, Json]
 ----
 {
-  "timestamp": 1453438312522,
-  "status": 409,
+  "timestamp": 1454392712283,
+  "status": 400,
   "errorCode": "TEST00001",
-  "error": "dup",
-  "exception": "DuplicateLoginNameException"
+  "error": "Unabailable loginName value",
+  "exception": "UnavailableLoginNameException"
 }
 ----
 NOTE: 응답 메시지 타입이 변경된 것을 확인할 수 있습니다.
 
-[[section2-4-2]]
-==== 4.(2) CORS(Cross-Origin Resource Sharing)
+[[section1-2]]
+==== 2. CORS(Cross-Origin Resource Sharing)
 
-[[section2-4-3]]
-==== 4.(3) Seal으로 보안 강화하기
+[[section1-3]]
+==== 3. Seal으로 보안 강화하기
 
-[[section2-4-4]]
-==== 4.(4) OAuth 2.0 클라이언트로서의 API Service
-
-[[section2-4-5]]
-==== 4.(5) ??
+[[section1-4]]
+==== 4. OAuth 2.0 클라이언트로서의 API Service
 
 
 
@@ -404,7 +405,6 @@ NOTE: 응답 메시지 타입이 변경된 것을 확인할 수 있습니다.
 
 [[outro]]
 == Summary
-굉장히 간단한 Spring Boot 기반의 RESTfull API Service 구축을 실습했습니다. +
 link:./doc/consuming_a_restful_api_with_angularjs2.adoc[다음 가이드]에서는 API 클라이언트로써 간단한 UI Application 개발을 실습해보도록 하겠습니다.
 
 [NOTE]

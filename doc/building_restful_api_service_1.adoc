@@ -24,17 +24,6 @@ Building RESTful API Service
 			<<section2-2-5>> +
 			<<section2-2-6>>
 
-        <<section2-3>>::
-            <<section2-3-1>> +
-            <<section2-3-2>> +
-            <<section2-3-3>>
-
-        <<section2-4>>::
-            <<section2-4-1>> +
-            <<section2-4-2>> +
-			<<section2-4-3>> +
-			<<section2-4-4>>
-
 ..... *<<outro>>*
 
 
@@ -76,7 +65,7 @@ NOTE: RESTful API 설계 가이드는 link:설계가이드url[RESTful API 설계
 * 예> 기상청으로부터 날씨정보를 받아오려면 OOO.jsp 파일로 부터 데이터를 추출하는 코드가 필요했습니다.
 
 .기존 Web Application의 형태
-image:server_page_archi.png[기존 Web Application의 형태]
+image:image_server_page_archi.png[기존 Web Application의 형태]
 
 [[section1-2]]
 === 2. RESTful API Service
@@ -84,7 +73,7 @@ image:server_page_archi.png[기존 Web Application의 형태]
 * 이제 다양한 Client들에 동일한 Data로 응답하기 위해 Webservice 아키텍처가 Web Application에도 적용됩니다.
 
 .RESTful Webservice API Service
-image:api_server_archi.png[RESTful Webservice API Service]
+image:image_api_server_archi.png[RESTful Webservice API Service]
 
 
 // Page 구분
@@ -120,7 +109,7 @@ mvn spring-boot:run
 
 
 [[section2-2]]
-=== 2. API 서비스 개발하기1
+=== 2. API 서비스 개발하기
 * 사용자 정보를 제공하는 API 서비스를 개발 해보겠습니다.
 * 본 섹션에서는 Spring Boot를 기반으로 최소 기능을 구현합니다.
 
@@ -702,10 +691,10 @@ public class UserController {
 * link:http://localhost:8081/console[H2 Console - http://localhost:8081/console]
 
 .H2 consle Login - Password 없음
-image:h2_console.png[H2 Console Login]
+image:image_h2_console.png[H2 Console Login]
 
 .H2 consle Query
-image:h2_console_select.png[H2 Console Select Query]
+image:image_h2_console_select.png[H2 Console Select Query]
 
 
 ===== 2.(7).1) *_org.anyframe.cloud.restservice.repository.RegisteredUserRepository_* Class 생성
@@ -750,73 +739,10 @@ public interface RegisteredUserJpaRepository extends RegisteredUserRepository, J
 <<<
 
 
-
-[[section2-3]]
-=== 3. API Test
-
-
-[[section2-3-1]]
-[id="run_app",reftext="Run Sample Application"]
-==== 3.(1) Run Sample Application
-
-.실행하기
-....
-cd rest-service/complete
-mvn spring-boot:run
-....
-
-[[section2-3-2]]
-==== 3.(2) curl로 테스트하기
-
-
-===== 3.(2).1) curl로 API 호출하기
-[source, Shell]
-----
-curl -X POST http://localhost:8081/user \
--H "Content-Type: application/json" \
--d '{"loginName":"anyframecloud","emailAddress":"cloud@api.com","firstName":"cloud","lastName":"anyframe"}'
-----
-NOTE: Window 사용자는 Git Bash로도 테스트가 가능합니다.
-
-===== 3.(2).2) Response
-image:curl_response.png[curl response]
-
-
-
-[[section2-3-3]]
-=== 3.(3) Postman으로 테스트하기
-
-NOTE: Postman은 크롬 확장 어플리케이션 중 하나일 뿐 많은 RestAPI Test Tool이 존재합니다.(예> SOAP UI 등)
-
-===== 3.(3).1) Request URL 및 Header
-image:postman_header.png[Postman Header]
-
-===== 3.(3).2) Request Body
-[source, Json]
---------------------------------------------
-{
-    "loginName":"anyframecloud",
-    "emailAddress":"anyframecloud@api.com",
-    "firstName":"cloud",
-    "lastName":"anyframe"
-}
---------------------------------------------
-image:postman_payload.png[Postman RequestBody]
-
-===== 3.(3).3) Response
-image:postman_response.png[Postman Response]
-
-.. 응답코드 *_201 Created_* 를 확인할 수 있습니다.
-.. Application Console에 Log를 통해 정상적으로 API 호출이 이뤄진 것을 확인할 수 있습니다.
-
-
-
-// Page 구분
-<<<
-
-
 [[outro]]
 == Summary
 굉장히 간단한 Spring Boot 기반의 RESTfull API Service 구축을 실습했습니다. +
 link:./building_restful_api_service_2.adoc[다음 가이드]에서는
-실제 솔루션에서 사용하기 위한 API Service 필수기능 구현에 대해 알아보도록 하겠습니다.
+실제 솔루션에서 사용하기 위한 API Service 필수기능 구현에 대해 알아보도록 하겠습니다. +
+
+API 서비스 테스트 방법에 대해서는 link:./test_restful_api_service.adoc[Test 가이드]에서 확인 하실수 있습니다.

@@ -1,39 +1,18 @@
 Getting Started
 ~~~~~~~~~~~~~~
 
-Building RESTful API Service
+Testing RESTful API Service
 ===========================
 
 == 목차
 ..... *<<intro>>*
 
 ..... *<<main1>>*
+
         <<section1-1>>::
-        
-        <<section1-2>>::
-
-..... *<<main2>>*
-        <<section2-1>>::
-			<<section2-1-1>>
-
-        <<section2-2>>::
-            <<section2-2-1>> +
-            <<section2-2-2>> +
-			<<section2-2-3>> +
-			<<section2-2-4>> +
-			<<section2-2-5>> +
-			<<section2-2-6>>
-
-        <<section2-3>>::
-            <<section2-3-1>> +
-            <<section2-3-2>> +
-            <<section2-3-3>>
-
-        <<section2-4>>::
-            <<section2-4-1>> +
-            <<section2-4-2>> +
-			<<section2-4-3>> +
-			<<section2-4-4>>
+            <<section1-1-1>> +
+            <<section1-1-2>> +
+            <<section1-1-3>>
 
 ..... *<<outro>>*
 
@@ -45,26 +24,26 @@ Building RESTful API Service
 
 [[intro]]
 == Introduce
+* 구축된 RESTful API Service를 테스트합니다.
 
 === Features
-* Spring Boot를 이용하여 RESTful API Service를 구축합니다.
-
-=== Need
-* 약 15분의 시간
+* Junit을 이용한 API Test
+* curl을 이용한 API Test
+* PostMan을 이용한 API Test
 
 
 // Page 구분
 <<<
 
+[[main1]]
+== API Test
+
+[[section1-1]]
+=== 1. API Test
 
 
-[[section2-3]]
-=== 3. API Test
-
-
-[[section2-3-1]]
-[id="run_app",reftext="Run Sample Application"]
-==== 3.(1) Run Sample Application
+[[section1-1-1]]
+==== 1.(1) Run Sample Application
 
 .실행하기
 ....
@@ -72,11 +51,11 @@ cd rest-service/complete
 mvn spring-boot:run
 ....
 
-[[section2-3-2]]
-==== 3.(2) curl로 테스트하기
+[[section1-1-2]]
+==== 1.(2) curl로 테스트하기
 
 
-===== 3.(2).1) curl로 API 호출하기
+===== 1.(2).1) curl로 API 호출하기
 [source, Shell]
 ----
 curl -X POST http://localhost:8081/user \
@@ -85,18 +64,18 @@ curl -X POST http://localhost:8081/user \
 ----
 NOTE: Window 사용자는 Git Bash로도 테스트가 가능합니다.
 
-===== 3.(2).2) Response
-image:./images/curl_response.png[curl response]
+===== 1.(2).2) Response
+image:image_curl_response.png[curl response]
 
 
 
-[[section2-3-3]]
-=== 3.(3) Postman으로 테스트하기
+[[section1-1-3]]
+=== 1.(3) Postman으로 테스트하기
 
 NOTE: Postman은 크롬 확장 어플리케이션 중 하나일 뿐 많은 RestAPI Test Tool이 존재합니다.(예> SOAP UI 등)
 
 ===== 3.(3).1) Request URL 및 Header
-image:./images/postman_header.png[Postman Header]
+image:image_postman_header.png[Postman Header]
 
 ===== 3.(3).2) Request Body
 [source, Json]
@@ -108,10 +87,10 @@ image:./images/postman_header.png[Postman Header]
     "lastName":"anyframe"
 }
 --------------------------------------------
-image:./images/postman_payload.png[Postman RequestBody]
+image:image_postman_payload.png[Postman RequestBody]
 
 ===== 3.(3).3) Response
-image:./images/postman_response.png[Postman Response]
+image:image_postman_response.png[Postman Response]
 
 .. 응답코드 *_201 Created_* 를 확인할 수 있습니다.
 .. Application Console에 Log를 통해 정상적으로 API 호출이 이뤄진 것을 확인할 수 있습니다.
