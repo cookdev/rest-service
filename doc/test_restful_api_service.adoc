@@ -10,9 +10,13 @@ Testing RESTful API Service
 ..... *<<main1>>*
 
         <<section1-1>>::
-            <<section1-1-1>> +
-            <<section1-1-2>> +
-            <<section1-1-3>>
+        <<section1-2>>::
+
+..... *<<main2>>*
+
+        <<section2-1>>::
+        <<section2-2>>::
+        <<section2-3>>::
 
 ..... *<<outro>>*
 
@@ -36,14 +40,10 @@ Testing RESTful API Service
 <<<
 
 [[main1]]
-== API Test
+== Run Sample Application
 
 [[section1-1]]
-=== 1. API Test
-
-
-[[section1-1-1]]
-==== 1.(1) Run Sample Application
+=== 1. Command 창에서 실행하기
 
 .실행하기
 ....
@@ -51,33 +51,34 @@ cd rest-service/complete
 mvn spring-boot:run
 ....
 
-[[section1-1-2]]
-==== 1.(2) curl로 테스트하기
+[[section1-2]]
+=== 2. Eclipse에서 실행하기
+작업중입니다.
 
 
-===== 1.(2).1) curl로 API 호출하기
-[source, Shell]
-----
-curl -X POST http://localhost:8081/user \
--H "Content-Type: application/json" \
--d '{"loginName":"anyframecloud","emailAddress":"cloud@api.com","firstName":"cloud","lastName":"anyframe"}'
-----
-NOTE: Window 사용자는 Git Bash로도 테스트가 가능합니다.
+// Page 구분
+<<<
 
-===== 1.(2).2) Response
-image:image_curl_response.png[curl response]
+[[main2]]
+== API Test
 
 
 
-[[section1-1-3]]
-=== 1.(3) Postman으로 테스트하기
+[[section2-1]]
+=== 1. Junit으로 테스트 하기
+작업중 입니다.
+
+
+
+[[section2-2]]
+=== 2. Postman으로 테스트하기
 
 NOTE: Postman은 크롬 확장 어플리케이션 중 하나일 뿐 많은 RestAPI Test Tool이 존재합니다.(예> SOAP UI 등)
 
-===== 3.(3).1) Request URL 및 Header
+==== 2.(1) Request URL 및 Header
 image:image_postman_header.png[Postman Header]
 
-===== 3.(3).2) Request Body
+==== 2.(2) Request Body
 [source, Json]
 --------------------------------------------
 {
@@ -89,11 +90,29 @@ image:image_postman_header.png[Postman Header]
 --------------------------------------------
 image:image_postman_payload.png[Postman RequestBody]
 
-===== 3.(3).3) Response
+==== 2.(3) Response
 image:image_postman_response.png[Postman Response]
 
 .. 응답코드 *_201 Created_* 를 확인할 수 있습니다.
 .. Application Console에 Log를 통해 정상적으로 API 호출이 이뤄진 것을 확인할 수 있습니다.
+
+
+
+[[section2-3]]
+=== 3. curl로 테스트하기
+
+
+==== 3.(1) curl로 API 호출하기
+[source, Shell]
+----
+curl -X POST http://localhost:8081/user \
+-H "Content-Type: application/json" \
+-d '{"loginName":"anyframecloud","emailAddress":"cloud@api.com","firstName":"cloud","lastName":"anyframe"}'
+----
+NOTE: Window 사용자는 Git Bash로도 테스트가 가능합니다.
+
+==== 3.(2) Response
+image:image_curl_response.png[curl response]
 
 
 
