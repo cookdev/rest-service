@@ -61,21 +61,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/{userId}", method = {RequestMethod.PUT})
-    @ResponseStatus(HttpStatus.OK)
-    public RegisteredUser modifyUser(@RequestBody RegisteredUser registerUser, @PathVariable(value = "userId") String userId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void modifyUser(@RequestBody RegisteredUser registerUser, @PathVariable(value = "userId") String userId) {
 
         User modifyUser = dtoToDomain(registerUser);
         modifyUser.setId(userId);
 
-        User user = userService.modifyUser(modifyUser);
+        userService.modifyUser(modifyUser);
 
-        RegisteredUser modifiedUser = domainToDto(user);
-
-        return modifiedUser;
     }
 
     @RequestMapping(value = "/user/{userId}", method = {RequestMethod.DELETE})
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.RESET_CONTENT)
     public void deleteUser(@PathVariable(value = "userId") String userId) {
 
         User deleteUser = new User();

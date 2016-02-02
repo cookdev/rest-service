@@ -1,6 +1,7 @@
-package org.anyframe.cloud.restservice.controller.advice;
+package org.anyframe.cloud.rest.interfaces.rest;
 
 import org.anyframe.cloud.restservice.controller.dto.SampleError;
+import org.anyframe.cloud.restservice.controller.exception.UnavailableLoginNameException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,23 @@ import java.util.Date;
 public class UserControllerAdvice extends ResponseEntityExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(UserControllerAdvice.class);
+
+    @ExceptionHandler(UnavailableLoginNameException.class)
+    @ResponseBody
+    ResponseEntity<?> unavailableLoginName(HttpServletRequest request, Throwable ex) {
+
+        logger.error("[UnavailableLoginNameException] - the loginName is unavailable.");
+
+        HttpStatus status = HttpStatus.valueOf(400);
+
+        return new ResponseEntity<>(
+                new SampleError(new Date()
+                        , status.value()
+                        , "TEST00001"
+                        , ex.getMessage()
+                        , ex.getClass().getSimpleName())
+                , status);
+    }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseBody
@@ -45,24 +63,4 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
                         , ex.getClass().getSimpleName())
                 , status);
     }
-
-//    @ExceptionHandler(DuplicatLoginNameException.class)
-//    @ResponseBody
-//    ResponseEntity<?> duplicatLoginNameException(HttpServletRequest request, DuplicatLoginNameException ex) {
-//
-//        logger.error("[DataIntegrityViolationACException] - {}", ex.getMessage());
-//        HttpStatus status = null;
-//
-////        if("".equals(ex.getConstraintName())){
-////            status = HttpStatus.valueOf(409);
-////        }
-//
-//        return new ResponseEntity<>(
-//                new SampleError(new Date()
-//                        , status.value()
-//                        , "TEST00001"
-//                        , ex.getMessage()
-//                        , ex.getClass().getSimpleName())
-//                , status);
-//    }
 }
