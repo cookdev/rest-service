@@ -10,6 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by Hahn on 2016-01-18.
  */
@@ -45,6 +50,18 @@ public class UserController {
         RegisteredUser registeredUser = domainToDto(user);
 
         return registeredUser;
+
+    }
+
+    @RequestMapping(value = "/user", method = {RequestMethod.GET})
+    @ResponseStatus(HttpStatus.OK)
+    public List<Map<String, Object>> getUserList() {
+
+        List<User> userList = userService.getUserList();
+
+        List<Map<String, Object>> registeredUsers = listDomainToDto(userList);
+
+        return registeredUsers;
 
     }
 
@@ -96,6 +113,20 @@ public class UserController {
                 , dto.getFirstName()
                 , dto.getLastName());
         return newUser;
+    }
+
+    private List<Map<String, Object>> listDomainToDto(List<User> userList){
+        List<Map<String, Object>> registeredUsers = new ArrayList();
+        for(User user : userList){
+            Map<String, Object> registeredUser = new HashMap();
+            registeredUser.put("loginName", user.getLoginName());
+            registeredUser.put("userId", user.getId());
+            registeredUser.put("emailAddress", user.getEmailAddress());
+            registeredUser.put("firstName", user.getFirstName());
+            registeredUser.put("lastName", user.getLastName());
+            registeredUsers.add(registeredUser);
+        }
+        return registeredUsers;
     }
 
 }

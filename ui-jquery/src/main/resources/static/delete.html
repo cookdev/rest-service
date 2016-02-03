@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Service</title>
+<link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="example delete">
+        <form class="form-horizontal" id="formUser" >
+            <fieldset>
+                <div class="form-group">
+                    <label for="inputId" class="col-sm-2 control-label">ID</label>
+                    <div class="col-sm-10">
+                        <input name="id" type="text" class="form-control" id="inputId" placeholder="id">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="isMethodOverride"> x-http-method-override
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" data-method="DELETE" class="btn btn-default">Remove</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="example result hidden">
+        <div class="result-display">
+
+        </div>
+    </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="script/common.js"></script>
+<script type="text/javascript" src="script/userService.js"></script>
+<script type="text/javascript" src="script/userView.js"></script>
+</body>
+</html>
