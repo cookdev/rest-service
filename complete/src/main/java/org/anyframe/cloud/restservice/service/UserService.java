@@ -13,7 +13,7 @@ public interface UserService {
 
     User getUserByLoginName(String loginName);
 
-    void modifyUser(User modifyUser);
+    User modifyUser(User modifyUser);
 
     void deleteUser(User deleteUser);
 }

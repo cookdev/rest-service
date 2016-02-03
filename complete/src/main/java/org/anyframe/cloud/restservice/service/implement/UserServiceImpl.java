@@ -64,14 +64,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void modifyUser(User modifyUser) {
+    public User modifyUser(User modifyUser) {
 
         logger.info("$$$ modifyUser - userId : ".concat(modifyUser.getId()));
 
-        registeredUserRepository.save(modifyUser);
+        User modifiedUser = registeredUserRepository.save(modifyUser);
 
         logger.info("$$$ modifyUser - modified user completed: ".concat(modifyUser.getId()));
 
+        return modifiedUser;
     }
 
     @Override
