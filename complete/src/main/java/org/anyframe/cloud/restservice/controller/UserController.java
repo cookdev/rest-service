@@ -79,13 +79,18 @@ public class UserController {
 
     @RequestMapping(value = "/user/{userId}", method = {RequestMethod.PUT})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void modifyUser(@RequestBody RegisteredUser registerUser, @PathVariable(value = "userId") String userId) {
+    public UserAccount modifyUser(@RequestBody RegisteredUser registerUser, @PathVariable(value = "userId") String userId) {
 
         User modifyUser = dtoToDomain(registerUser);
         modifyUser.setId(userId);
 
-        userService.modifyUser(modifyUser);
+        User user = userService.modifyUser(modifyUser);
 
+        UserAccount userAccount = new UserAccount(user.getId()
+                , user.getLoginName()
+                , user.getEmailAddress());
+
+        return userAccount;
     }
 
     @RequestMapping(value = "/user/{userId}", method = {RequestMethod.DELETE})
