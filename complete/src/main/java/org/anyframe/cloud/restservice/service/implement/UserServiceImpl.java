@@ -1,6 +1,7 @@
 package org.anyframe.cloud.restservice.service.implement;
 
 import org.anyframe.cloud.restservice.controller.exception.UnavailableLoginNameException;
+import org.anyframe.cloud.restservice.controller.exception.UserNotFoundException;
 import org.anyframe.cloud.restservice.domain.User;
 import org.anyframe.cloud.restservice.repository.jpa.RegisteredUserJpaRepository;
 import org.anyframe.cloud.restservice.service.UserService;
@@ -9,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by Hahn on 2016-01-18.
@@ -40,11 +43,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getUserList() {
+
+        List<User> registeredUsers = registeredUserRepository.findAll();
+
+        if(registeredUsers.size() == 0){
+            throw new UserNotFoundException("Any User are not found");
+        }
+
+        return registeredUsers;
+    }
+
+    @Override
     public User getUserById(String userId) {
 
         logger.info("$$$ getUserById - userId : ".concat(userId));
 
         User registeredUser = registeredUserRepository.findOne(userId);
+
+        if(registeredUser == null){
+            throw new UserNotFoundException("User[".concat(userId).concat("] is not existed"));
+        }
 
         logger.info("$$$ getUserById - user : ".concat(registeredUser.toString()));
 

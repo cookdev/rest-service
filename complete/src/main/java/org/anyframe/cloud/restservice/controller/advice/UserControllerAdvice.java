@@ -1,7 +1,8 @@
-package org.anyframe.cloud.rest.interfaces.rest;
+package org.anyframe.cloud.restservice.controller.advice;
 
 import org.anyframe.cloud.restservice.controller.dto.SampleError;
 import org.anyframe.cloud.restservice.controller.exception.UnavailableLoginNameException;
+import org.anyframe.cloud.restservice.controller.exception.UserNotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,24 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(
                 new SampleError(new Date()
                         , status.value()
-                        , "TEST00001"
+                        , "TEST00002"
+                        , ex.getMessage()
+                        , ex.getClass().getSimpleName())
+                , status);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseBody
+    ResponseEntity<?> userNotFound(HttpServletRequest request, Throwable ex) {
+
+        logger.error("[UserNotFoundException] - user is not exited.");
+
+        HttpStatus status = HttpStatus.valueOf(404);
+
+        return new ResponseEntity<>(
+                new SampleError(new Date()
+                        , status.value()
+                        , "TEST00003"
                         , ex.getMessage()
                         , ex.getClass().getSimpleName())
                 , status);
