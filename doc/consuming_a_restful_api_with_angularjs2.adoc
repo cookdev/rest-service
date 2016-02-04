@@ -682,7 +682,7 @@ image:image_curl_response.png[curl response]
 
 
 [[section2-3-3]]
-=== 3.(3) Postman으로 테스트하기
+==== 3.(3) Postman으로 테스트하기
 
 NOTE: Postman은 크롬 확장 어플리케이션 중 하나일 뿐 많은 RestAPI Test Tool이 존재합니다.(예> SOAP UI 등)
 
