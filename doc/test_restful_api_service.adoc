@@ -52,7 +52,60 @@ mvn spring-boot:run
 
 [[section1-2]]
 === 2. Eclipse에서 실행하기
-작업중입니다.
+
+==== 2.(1) Maven Project import
+
+[caption="1) "]
+.File > Import... > Select Existing Maven Projects > Next
+====
+image::image_eclipse_import_1.png[]
+====
+
+[caption="2) "]
+.Select Root Directory (git repository) > Finish
+====
+.Maven Project import
+image::image_eclipse_import_2.png[]
+====
+
+[caption="3) "]
+.Complete
+====
+.Maven Project import
+image::image_eclipse_import_3.png[]
+====
+
+==== 2.(2) 실행하기
+
+===== 2.(2).1) Maven Build로 실행
+
+[caption="a. "]
+.Project 선택 > 우클릭 > Run As > Maven Build... 선택
+====
+image::image_eclipse_run_1.png[]
+====
+
+[caption="b. "]
+.Goals 입력( spring-boot:run )
+====
+image::image_eclipse_run_2.png[]
+====
+
+[caption="c. "]
+.Complete
+====
+image::image_eclipse_run_3.png[]
+====
+
+===== 2.(2).1) Java Application으로 실행
+
+
+[caption=""]
+.Project 선택 > 우클릭 > Run As > Java Application 선택
+====
+image::image_eclipse_run_4.png[]
+====
+
 
 
 // Page 구분
@@ -69,7 +122,7 @@ mvn spring-boot:run
 즉, 간단한 테스트 클래스의 실행만으로 URL, 헤더, 요청과 응답에 대한 정보 등등을 빠르게 확인할 수 있습니다. +
 추가적으로 요청과 응답 데이터가 모두 JSON 방식이기 때문에 JSON 데이터를 테스트하기 위해서 `com.jayway.jsonpath` 라는 라이브러리를 사용합니다. +
 
-=== 1.(1) 기본 설정
+==== 1.(1) 기본 설정
 실제 테스트 코드를 작성하기 전에 기본 설정 부분의 소스입니다.
 MockMVC 객체를 선언 및 생성하고, contentType과 테스트를 위한 기본 데이터를 셋팅합니다.
 
@@ -116,7 +169,7 @@ MockMVC 객체를 생성하기 위해 WebApplicationContext가 필요
 MockMVC 객체를 생성
 ====
 
-=== 1.(2) 테스트 예제 (getUserById 메소드)
+==== 1.(2) 테스트 예제 (getUserById 메소드)
 실제 테스트 코드를 작성하는 부분입니다. 기본적으로 `CRUD` 에 대한 테스트 중에서 `GET` 방식을 이용한 getUserById 에 대한 테스트 소스입니다. +
 전체적인 테스트 STEP은 다음과 같습니다.
 

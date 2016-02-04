@@ -9,9 +9,6 @@ logging:
     org.anyframe.cloud: DEBUG
 
 spring:
-  output:
-    ansi:
-      enabled: true
 #  dao:
 #    exceptiontranslation:
 #      enabled: false
