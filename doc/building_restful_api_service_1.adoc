@@ -424,12 +424,12 @@ public interface UserService {
 }
 ----
 
-===== 2.(4).2) *_org.anyframe.cloud.restservice.service.implement.UserServiceImpl_* Class 생성
+===== 2.(4).2) *_org.anyframe.cloud.restservice.service.impl.UserServiceImpl_* Class 생성
 
 .UserServiceImpl.class
 [source, java]
 ----
-package org.anyframe.cloud.restservice.service.implement;
+package org.anyframe.cloud.restservice.service.impl;
 
 import org.anyframe.cloud.restservice.domain.User;
 import org.anyframe.cloud.restservice.repository.jpa.RegisteredUserJpaRepository;

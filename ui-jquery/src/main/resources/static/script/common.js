@@ -3,7 +3,7 @@
  */
 var util = {
     urlRoot: {
-        user: 'http://localhost:8081/user'
+        user: 'http://localhost:8081/users'
     },
     headers: {
         "Content-Type": "application/json",

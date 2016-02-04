@@ -1,4 +1,4 @@
-package org.anyframe.cloud.restservice.service.implement;
+package org.anyframe.cloud.restservice.service.impl;
 
 import org.anyframe.cloud.restservice.controller.exception.UnavailableLoginNameException;
 import org.anyframe.cloud.restservice.controller.exception.UserNotFoundException;

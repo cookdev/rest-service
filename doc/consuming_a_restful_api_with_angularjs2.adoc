@@ -398,7 +398,7 @@ public interface UserService {
 .UserServiceImpl.class
 [source, java]
 ----
-package org.anyframe.cloud.restservice.service.implement;
+package org.anyframe.cloud.restservice.service.impl;
 
 import org.anyframe.cloud.restservice.service.UserService;
 import org.anyframe.cloud.restservice.domain.User;

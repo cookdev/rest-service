@@ -14,9 +14,7 @@ import javax.servlet.Filter;
  * Created by Hahn on 2016-01-27.
  */
 @Configuration
-@EnableAutoConfiguration()
-
-
+@EnableAutoConfiguration
 public class WebConfiguration {
     @Bean
     ServletRegistrationBean h2servletRegistration(){

@@ -19,7 +19,7 @@
             },
             onSubmit: function () {
                 var that = this;
-                this.http.post('http://localhost:8081/user',
+                this.http.post('http://localhost:8081/users',
                     JSON.stringify({
                         "loginName": this.model.loginName,
                         "emailAddress": this.model.emailAddress,
@@ -36,7 +36,7 @@
             },
             viewChange: function(data){
                 var that = this;
-                this.http.get('http://localhost:8081/user/'+data.loginName,{
+                this.http.get('http://localhost:8081/users/'+data.loginName,{
                     headers: {
                         'Accept': 'service/json',
                         'Content-Type': ' service/json'

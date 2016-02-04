@@ -1,7 +1,17 @@
 server:
   port: 8081
 
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.hibernate: DEBUG
+    org.anyframe.cloud: DEBUG
+
 spring:
+  output:
+    ansi:
+      enabled: true
 #  dao:
 #    exceptiontranslation:
 #      enabled: false

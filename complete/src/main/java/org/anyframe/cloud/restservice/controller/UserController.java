@@ -26,7 +26,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/user", method = {RequestMethod.POST})
+    @RequestMapping(value = "/users", method = {RequestMethod.POST})
     @ResponseStatus(HttpStatus.CREATED)
     public UserAccount registerUser(@RequestBody RegisteredUser registerUser) {
 
@@ -41,7 +41,7 @@ public class UserController {
         return userAccount;
     }
 
-    @RequestMapping(value = "/user/{userId}", method = {RequestMethod.GET})
+    @RequestMapping(value = "/users/{userId}", method = {RequestMethod.GET})
     @ResponseStatus(HttpStatus.OK)
     public RegisteredUser getUserById(@PathVariable(value = "userId") String userId) {
 
@@ -53,7 +53,7 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/user", method = {RequestMethod.GET})
+    @RequestMapping(value = "/users", method = {RequestMethod.GET})
     @ResponseStatus(HttpStatus.OK)
     public List<Map<String, Object>> getUserList() {
 
@@ -65,7 +65,7 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/user/login-name", method = {RequestMethod.GET})
+    @RequestMapping(value = "/users/login-name", method = {RequestMethod.GET})
     @ResponseStatus(HttpStatus.OK)
     public RegisteredUser getUserByLoginName(@RequestParam(name = "loginName") String loginName) {
 
@@ -77,7 +77,7 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/user/{userId}", method = {RequestMethod.PUT})
+    @RequestMapping(value = "/users/{userId}", method = {RequestMethod.PUT})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public RegisteredUser modifyUser(@RequestBody RegisteredUser registerUser, @PathVariable(value = "userId") String userId) {
 
@@ -91,7 +91,7 @@ public class UserController {
         return registeredUser;
     }
 
-    @RequestMapping(value = "/user/{userId}", method = {RequestMethod.DELETE})
+    @RequestMapping(value = "/users/{userId}", method = {RequestMethod.DELETE})
     @ResponseStatus(HttpStatus.RESET_CONTENT)
     public void deleteUser(@PathVariable(value = "userId") String userId) {
 
