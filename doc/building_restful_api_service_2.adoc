@@ -104,7 +104,7 @@ Business Exception 설계는 API 설계 시 완료되어야 하는 부분이지�
 .오류 발생 상황
 회원가입 시 admin이라는 loginName으로 등록 경우 LoginName 중복 오류 발생
 
-* *POST /user*
+* *POST /users*
 * Exception: *UnavailableLoginNameException*
 * HTTP Staus Code: *400 Bad Request*
 * Response:
@@ -191,12 +191,12 @@ public User registerUser(User newUser) {
 ==== 1.(6) 오류처리 테스트
 
 . 서버를 구동합니다.(link:doc/test_restful_api_service.adoc[REST API 테스트 가이드])
-. curl 호출 방식을 통해 회원가입(POST /user) 요청
+. curl 호출 방식을 통해 회원가입(POST /users) 요청
 
 .curl 요청
 [source, Shell]
 ----
-curl -X POST http://localhost:8081/user \
+curl -X POST http://localhost:8081/users \
 -H "Content-Type: application/json" \
 -d '{"loginName":"admin","emailAddress":"cloud@api.com","firstName":"cloud","lastName":"anyframe"}'
 ----
@@ -210,7 +210,7 @@ curl -X POST http://localhost:8081/user \
   "error": "Conflict",
   "exception": "org.anyframe.cloud.rest.application.exception.UnavailableLoginNameException",
   "message": "Unabailable loginName value",
-  "path": "/user"
+  "path": "/users"
 }
 ----
 [NOTE]
@@ -364,12 +364,12 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
 ==== 1.(8) 오류처리 테스트
 
 . 서버를 구동합니다.(link:doc/test_restful_api_service.adoc[REST API 테스트 가이드])
-. curl 호출 방식을 통해 회원가입(POST /user) 요청
+. curl 호출 방식을 통해 회원가입(POST /users) 요청
 
 .curl 요청
 [source, Shell]
 ----
-curl -X POST http://localhost:8081/user \
+curl -X POST http://localhost:8081/users \
 -H "Content-Type: application/json" \
 -d '{"loginName":"admin","emailAddress":"cloud@api.com","firstName":"cloud","lastName":"anyframe"}'
 ----
@@ -472,6 +472,47 @@ NOTE: "OPTIONS"에 있는 if문은 HTTP Method Override를 위해 존재할 뿐 
 
 [[section1-3]]
 ==== 3. HTTP Method Override
+*_본 섹션은 보안 문제로 인해 POST, GET Method만 사용가능한 솔루션을 위해 작성되었습니다._*
+
+* PUT, DELETE 요청이 불가한 경우 Servlet Filter를 통해 HTTP Method를 재정의 할 수 있습니다.
+
+* Servlet은 필터에서 요청과 응답을 변경하여 사용할 수 있도록 ServletRequestWrapper와 ServletResponseWrapper을 제공합니다.
+
+* javax.servlet.http.HttpServletRequestWrapper: HTTP Protocol 요청/응답을 래핑해주는 클래스
+
+* Spring에서는 HTTP Method 재정의를 위해 *HiddenHttpMethodFilter* 를 사용하여 HTTP 요청을 래핑합니다.
+
+* 하지만 CORS 환경에서 Preflight 처리가 불가하기 때문에 Anyframe에서는 *HiddenHttpMethodFilter* 상속한 두개의 필터를 제공합니다.
+
+
+.org.anyframe.cloud.web.filter.*OverrideHttpMethodHeaderFilter*
+*"x-http-method-override"* 헤더의 값을 이용
+....
+POST /users/1732 HTTP/1.1
+Content-Type: application/json
+x-http-method-override: PUT
+{
+  "id":"1454509611497-1",
+  "loginName":"test",
+  "emailAddress":"test@test.com",
+  "firstName":"test2",
+  "lastName":"test2"
+}
+....
+
+.org.anyframe.cloud.web.filter.*OverrideHttpMethodRequestParamFilter*
+*"_method"* Request Parameter 값을 이용
+....
+POST /users/1732?_method=PUT HTTP/1.1
+Content-Type: application/json
+{
+  "id":"1454509611497-1",
+  "loginName":"test",
+  "emailAddress":"test@test.com",
+  "firstName":"test2",
+  "lastName":"test2"
+}
+....
 
 [[section1-4]]
 ==== 4. Seal으로 보안 강화하기
