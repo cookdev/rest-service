@@ -35,7 +35,7 @@ Getting Started
 == Introduce
 *Spring Boot 기반의 link:http://spring.io/understanding/REST[REST] API 서비스 구축을 위한 레퍼런스 문서입니다.*
 
-NOTE: RESTful API 설계 가이드는 link:설계가이드url[RESTful API 설계 가이드]를 참조 바랍니다.
+NOTE: RESTful API 설계 가이드는 link:1_design_restful_api.adoc[RESTful API 설계 가이드]를 참조 바랍니다.
 
 === Features
 * Spring Boot를 이용하여 RESTful API Service를 구축합니다.
