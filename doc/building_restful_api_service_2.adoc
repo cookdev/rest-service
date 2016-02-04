@@ -389,13 +389,97 @@ NOTE: 응답 메시지 타입이 변경된 것을 확인할 수 있습니다.
 
 [[section1-2]]
 ==== 2. CORS(Cross-Origin Resource Sharing)
+*_CORS는 Same-origin Policy를 우회 할 수 있는 W3C 표준 규약입니다.link:https://www.w3.org/TR/cors[(참고 문서)]_*
+
+===== 2.(1) CORS Headers
+. Response Header
+.. Access-Control-Allow-Origin (required)
+* "*"이나  "null", 특정 도메인을 입력하여 리소스 공유 가능 여부를 알려줌.
+.. Access-Control-Allow-Credentials (optional)
+* Credentials flag가 설정되지 않은 경우에 공유 할 것인가를 결정
+* Cookie, User Credential과 연관이 있음
+* Cookie 공유도 허가하는 경우 "true"로 세팅한다.
+.. Access-Control-Expose-Headers (optional)
+* CORS 요청 처리 동안 아래의 Response Header에만 접근 가능하다.
+** Cache-Control, Content-Language, Content-Type, Expires, Last-Modified, Pragma
+* 여기에 다른 헤더를 추가하고 싶으면 " Access-Control-Expose-Headers"에 추가해 주면 된다.
+.. Access-Control-Max-Age (optional)
+* Preflight Request 캐시 기간
+.. Access-Control-Allow-Methods(required)
+* CORS를 지원하고자 하는 모든 HTTP Method들.
+.. Access-Control-Allow-Headers(required, optional)
+* CORS를 지원하고자 하는 모든 Request Header들.
+
+. Request Header
+.. Origin
+.. Access-Control-Request-Method: 실제요청의 Http Method.
+.. Access-Control-Request-Headers: Non-simple Header('x-' 헤더와 같은)가 요청에 포함될 때 기재한다.
+
+===== 2.(2) Preflight Request
+* 실제 요청 이전에 요청이 가능하지 허가받기 위한 사전요청
+* 복잡한 HTTP요청시에만 *OPTIONS* Method를 이용한 *_Preflight Request_*  한다.
+** 간단한 HTTP 요청
+*** HEAD, GET, POST 메서드를 사용하고,
+*** Accept, Accept-Language, Content-Language, Lsat-Event-ID, Content-Type 헤더만 사용하며,
+*** 응답으로 application/x-www-form-urlenceded, multipart/form-data, text/plain 만 사용할 때
+** 복잡한 HTTP 요청:
+*** PUT, DELETE 메서드를 사용하거나,
+*** 기본 헤더 이외의 헤더를 보내려고 하거나,
+*** 응답으로 application/json 같은 타입을 사용하려고 할 때
+
+===== 2.(3) Simple CORS Filter
+* *서버에서 CORS를 지원하기 위한 방법에는 여러가지가 있으며, 솔루션 전략에 따라 제공하는 방식이 조금씩 다를 수 있다*
+(쿠키를 공유한다던가, 특정 Header를 사용거나, Gateway가 존재하는 등).
+
+* 본 섹터에서는 Servlet Filter를 이용하여 일반적인 상황에서 CORS를 지원하기 위한 방법을 제공한다.
+
+
+.SimpleCORSFilter 구현하기
+[source, Java]
+----
+package org.anyframe.cloud.web.filter;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class SimpleCORSFilter implements Filter {
+
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, OPTIONS, PUT");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, x-http-method-override");
+        if(!"OPTIONS".equals(request.getMethod())){
+            chain.doFilter(req, res);
+        }
+    }
+
+    public void init(FilterConfig filterConfig) {}
+
+    public void destroy() {}
+
+}
+----
+* 모든 Cross-Origin에 "POST, GET, DELETE, OPTIONS, PUT" 요청에 대해 자원을 공유한다.
+* 단 "Content-Type, Accept, Authorization, x-http-method-override" 이외의 헤더는 허용하지 않는다.
+
+NOTE: "OPTIONS"에 있는 if문은 HTTP Method Override를 위해 존재할 뿐 일반적으로는 사용하지 않아도 됩니다.
+
 
 [[section1-3]]
-==== 3. Seal으로 보안 강화하기
+==== 3. HTTP Method Override
 
 [[section1-4]]
-==== 4. OAuth 2.0 클라이언트로서의 API Service
+==== 4. Seal으로 보안 강화하기
+작성중입니다.
 
+[[section1-5]]
+==== 5. OAuth 2.0 클라이언트로서의 API Service
+작성중입니다.
 
 
 // Page 구분
