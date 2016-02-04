@@ -35,7 +35,7 @@ Getting Started
 == Introduce
 *Spring Boot 기반의 link:http://spring.io/understanding/REST[REST] API 서비스 구축을 위한 레퍼런스 문서입니다.*
 
-NOTE: RESTful API 설계 가이드는 link:1_design_restful_api.adoc[RESTful API 설계 가이드]를 참조 바랍니다.
+NOTE: RESTful API 설계 가이드는 link:1_design_restful_api.adoc[RESTful API 설계 가이드](link:1_design_restful_api.pdf[PDF])를 참조 바랍니다.
 
 === Features
 * Spring Boot를 이용하여 RESTful API Service를 구축합니다.
@@ -738,7 +738,7 @@ public interface RegisteredUserJpaRepository extends RegisteredUserRepository, J
 [[outro]]
 == Summary
 굉장히 간단한 Spring Boot 기반의 RESTfull API Service 구축을 실습했습니다. +
-link:3_building_restful_api_service_advanced.adoc[다음 가이드]에서는
+link:3_building_restful_api_service_advanced.adoc[다음 가이드](link:3_building_restful_api_service_advanced.pdf[PDF])에서는
 실제 솔루션에서 사용하기 위한 API Service 필수기능 구현에 대해 알아보도록 하겠습니다. +
 
-API 서비스 테스트 방법에 대해서는 link:4_test_restful_api_service.adoc[Test 가이드]에서 확인 하실수 있습니다.
+API 서비스 테스트 방법에 대해서는 link:4_test_restful_api_service.adoc[Test 가이드](link:4_test_restful_api_service.pdf[PDF])에서 확인 하실수 있습니다.
