@@ -217,4 +217,4 @@ databaseChangeLog:
                   value: jasmin
               - column:
                   name: last_name
-                  value: kim
+                  value: kime
