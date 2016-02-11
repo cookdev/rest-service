@@ -310,12 +310,14 @@ public class SampleError {
 .ControllerAdvice 생성하기
 [source, Java]
 ----
-package org.anyframe.cloud.restservice.controller.advice;
-
 import org.anyframe.cloud.restservice.controller.dto.SampleError;
 import org.anyframe.cloud.restservice.controller.exception.UnavailableLoginNameException;
+import org.anyframe.cloud.restservice.controller.exception.UserNotFoundException;
+import org.anyframe.cloud.web.servlet.mvc.AbstractController;
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -326,10 +328,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
-@ControllerAdvice(basePackages = "org.anyframe.cloud.restservice.controller")
-public class UserControllerAdvice extends ResponseEntityExceptionHandler {
+/**
+ * Created by Hahn on 2016-01-21.
+ */
+@ControllerAdvice(assignableTypes = {AbstractController.class})
+public class UserExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserControllerAdvice.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserExceptionHandler.class);
 
     @ExceptionHandler(UnavailableLoginNameException.class)
     @ResponseBody

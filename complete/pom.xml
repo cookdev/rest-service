@@ -42,7 +42,20 @@
 			<artifactId>h2</artifactId>
 			<scope>compile</scope>
 		</dependency>
-		
+
+		<!-- for swagger2 ui-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.1.2</version>
+		</dependency>
+
+		 <!--for test-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

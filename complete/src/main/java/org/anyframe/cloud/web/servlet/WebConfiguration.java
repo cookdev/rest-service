@@ -29,7 +29,7 @@ public class WebConfiguration {
     }
 
     @Bean
-    public OverrideHttpMethodHeaderFilter HiddenHttpMethodFilter() {
+    public OverrideHttpMethodHeaderFilter hiddenHttpMethodFilter() {
         return new OverrideHttpMethodHeaderFilter();
     }
 
@@ -37,4 +37,5 @@ public class WebConfiguration {
 //    public OverrideHttpMethodRequestParamFilter HiddenHttpMethodFilter() {
 //        return new OverrideHttpMethodRequestParamFilter();
 //    }
+
 }

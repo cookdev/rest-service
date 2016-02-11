@@ -1,6 +1,9 @@
 package org.anyframe.cloud.restservice.service;
 
 import org.anyframe.cloud.restservice.domain.User;
+import org.anyframe.cloud.data.domain.AnyframePageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -11,7 +14,9 @@ public interface UserService {
 
     User registerUser(User newUser);
 
-    List<User> getUserList();
+    List<User> getAllUsers();
+
+    Page<User> getUsers(Pageable pageRequest);
 
     User getUserById(String userId);
 

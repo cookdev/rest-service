@@ -1,8 +1,9 @@
-package org.anyframe.cloud.restservice.controller.advice;
+package org.anyframe.cloud.restservice.controller.handler;
 
 import org.anyframe.cloud.restservice.controller.dto.SampleError;
 import org.anyframe.cloud.restservice.controller.exception.UnavailableLoginNameException;
 import org.anyframe.cloud.restservice.controller.exception.UserNotFoundException;
+import org.anyframe.cloud.web.servlet.mvc.AbstractController;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +21,10 @@ import java.util.Date;
 /**
  * Created by Hahn on 2016-01-21.
  */
-@ControllerAdvice(basePackages = "org.anyframe.cloud.restservice.controller")
-public class UserControllerAdvice extends ResponseEntityExceptionHandler {
+@ControllerAdvice(assignableTypes = {AbstractController.class})
+public class UserExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserControllerAdvice.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserExceptionHandler.class);
 
     @ExceptionHandler(UnavailableLoginNameException.class)
     @ResponseBody

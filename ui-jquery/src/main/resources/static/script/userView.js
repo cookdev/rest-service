@@ -28,11 +28,7 @@ var UserView = (function(formId){
 
     $(formId).find('input#isMethodOverride').change(function(){
         UserService.setIsMethodOverride($(this).prop("checked"));
-    })
-
-    var setUserList = function(result){
-        userList = result;
-    }
+    });
 
     // public
     return {
@@ -42,7 +38,6 @@ var UserView = (function(formId){
         },
 
         setUserListCombo: function(result){
-            setUserList(result);
 
             $(formId).find('select#inputId').append('<option>Select User</option>');
             $.each(result, function(idx){
@@ -51,18 +46,18 @@ var UserView = (function(formId){
 
             $(formId).find('select#inputId').on('change', function(e){
                 var that = this;
-                var selectedUser = {};
-                $.each(userList, function(idx){
-                    if(this.userId === $(that).val()){
-                        selectedUser = this;
-                        return;
+
+                UserService.getUserById($(this).val(), function(jqXHR, textStatus){
+                    var selectedUser = jqXHR.responseJSON || textStatus
+                    if("error" === textStatus){
+
+                    }else{
+                        $(formId).find('input#inputLoginName').val(selectedUser.loginName);
+                        $(formId).find('input#inputEmail').val(selectedUser.emailAddress);
+                        $(formId).find('input#inputFName').val(selectedUser.firstName);
+                        $(formId).find('input#inputLName').val(selectedUser.lastName);
                     }
                 });
-
-                $(formId).find('input#inputLoginName').val(selectedUser.loginName);
-                $(formId).find('input#inputEmail').val(selectedUser.emailAddress);
-                $(formId).find('input#inputFName').val(selectedUser.firstName);
-                $(formId).find('input#inputLName').val(selectedUser.lastName);
             });
         }
     }

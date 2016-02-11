@@ -1,5 +1,6 @@
 package org.anyframe.cloud.restservice.service.impl;
 
+import org.anyframe.cloud.data.domain.AnyframePageable;
 import org.anyframe.cloud.restservice.controller.exception.UnavailableLoginNameException;
 import org.anyframe.cloud.restservice.controller.exception.UserNotFoundException;
 import org.anyframe.cloud.restservice.domain.User;
@@ -9,6 +10,8 @@ import org.anyframe.cloud.restservice.util.IdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,11 +46,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUserList() {
+    public List<User> getAllUsers() {
 
         List<User> registeredUsers = registeredUserRepository.findAll();
 
         if(registeredUsers.size() == 0){
+            throw new UserNotFoundException("Any User are not found");
+        }
+
+        return registeredUsers;
+    }
+
+    @Override
+    public Page<User> getUsers(Pageable pageRequest) {
+        Page<User> registeredUsers = registeredUserRepository.findAll(pageRequest);
+
+        if(registeredUsers.getSize() == 0){
             throw new UserNotFoundException("Any User are not found");
         }
 

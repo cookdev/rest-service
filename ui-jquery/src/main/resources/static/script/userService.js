@@ -36,10 +36,22 @@ var UserService = (function() {
         });
     };
 
+    var getAllUserAccount = function(callback){
+        $.ajax(util.urlRoot.user + "/accounts", {
+            headers: util.headers,
+            method: 'GET',
+            complete: callback
+        });
+    };
+
     var getUserList = function(callback){
         $.ajax(util.urlRoot.user, {
             headers: util.headers,
             method: 'GET',
+            data: {
+                offset: 1,
+                limit: 1
+            },
             complete: callback
         });
     };
@@ -133,7 +145,7 @@ var UserService = (function() {
                 }
 
             };
-            getUserList(callback);
+            getAllUserAccount(callback);
         },
 
         modifyUserById: function(userId, registeredUser, callback){

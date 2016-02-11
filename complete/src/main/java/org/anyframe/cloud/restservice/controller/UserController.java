@@ -4,9 +4,13 @@ import org.anyframe.cloud.restservice.service.UserService;
 import org.anyframe.cloud.restservice.domain.User;
 import org.anyframe.cloud.restservice.controller.dto.RegisteredUser;
 import org.anyframe.cloud.restservice.controller.dto.UserAccount;
+import org.anyframe.cloud.web.servlet.mvc.AbstractController;
+import org.anyframe.cloud.web.annotation.PageableRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +23,7 @@ import java.util.Map;
  * Created by Hahn on 2016-01-18.
  */
 @RestController
-public class UserController {
+public class UserController extends AbstractController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -34,11 +38,43 @@ public class UserController {
 
         User user = userService.registerUser(newUser);
 
-        UserAccount userAccount = new UserAccount(user.getId()
-                , user.getLoginName()
-                , user.getEmailAddress());
+        UserAccount userAccount = toUserAccountDto(user);
 
         return userAccount;
+    }
+
+    private UserAccount toUserAccountDto(User user) {
+        return new UserAccount(user.getId()
+                    , user.getLoginName()
+                    , user.getEmailAddress());
+    }
+
+    @RequestMapping(value = "/users/accounts", method = {RequestMethod.GET})
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserAccount> getAllUsers() {
+
+        List<User> users = userService.getAllUsers();
+
+        List<UserAccount> userAccount = new ArrayList<UserAccount>();
+        for(User user: users){
+            userAccount.add(toUserAccountDto(user));
+        }
+
+        return userAccount;
+
+    }
+
+    @PageableRequest
+    @RequestMapping(value = "/users", method = {RequestMethod.GET})
+    @ResponseStatus(HttpStatus.OK)
+    public Page<User> getUsers(
+            @RequestParam(name = "offset", defaultValue = "1", required = false) int offset,
+            @RequestParam(name = "limit", defaultValue ="10", required = false) int limit) {
+
+        Page<User> users = userService.getUsers(new PageRequest(offset/limit, limit));
+
+        return users;
+
     }
 
     @RequestMapping(value = "/users/{userId}", method = {RequestMethod.GET})
@@ -50,18 +86,6 @@ public class UserController {
         RegisteredUser registeredUser = domainToDto(user);
 
         return registeredUser;
-
-    }
-
-    @RequestMapping(value = "/users", method = {RequestMethod.GET})
-    @ResponseStatus(HttpStatus.OK)
-    public List<Map<String, Object>> getUserList() {
-
-        List<User> userList = userService.getUserList();
-
-        List<Map<String, Object>> registeredUsers = listDomainToDto(userList);
-
-        return registeredUsers;
 
     }
 
@@ -116,20 +140,6 @@ public class UserController {
                 , dto.getFirstName()
                 , dto.getLastName());
         return newUser;
-    }
-
-    private List<Map<String, Object>> listDomainToDto(List<User> userList){
-        List<Map<String, Object>> registeredUsers = new ArrayList();
-        for(User user : userList){
-            Map<String, Object> registeredUser = new HashMap();
-            registeredUser.put("loginName", user.getLoginName());
-            registeredUser.put("userId", user.getId());
-            registeredUser.put("emailAddress", user.getEmailAddress());
-            registeredUser.put("firstName", user.getFirstName());
-            registeredUser.put("lastName", user.getLastName());
-            registeredUsers.add(registeredUser);
-        }
-        return registeredUsers;
     }
 
 }
