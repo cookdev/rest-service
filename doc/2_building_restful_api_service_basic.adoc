@@ -415,7 +415,7 @@ NOTE: Userservice Complie 오류가 발생합니다.
 ----
 package org.anyframe.cloud.restservice.service;
 
-import org.anyframe.cloud.restservice.domain.User;
+import User;
 
 public interface UserService {
 
@@ -431,10 +431,10 @@ public interface UserService {
 ----
 package org.anyframe.cloud.restservice.service.impl;
 
-import org.anyframe.cloud.restservice.domain.User;
-import org.anyframe.cloud.restservice.repository.jpa.RegisteredUserJpaRepository;
-import org.anyframe.cloud.restservice.service.UserService;
-import org.anyframe.cloud.restservice.util.IdGenerator;
+import User;
+import RegisteredUserJpaRepository;
+import UserService;
+import IdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -700,7 +700,7 @@ image::image_h2_console_select.png[title="H2 consle Query"]
 ----
 package org.anyframe.cloud.restservice.repository;
 
-import org.anyframe.cloud.restservice.domain.User;
+import User;
 
 public interface RegisteredUserRepository {
 
@@ -721,8 +721,8 @@ public interface RegisteredUserRepository {
 ----
 package org.anyframe.cloud.restservice.repository.jpa;
 
-import org.anyframe.cloud.restservice.domain.User;
-import org.anyframe.cloud.restservice.repository.RegisteredUserRepository;
+import User;
+import RegisteredUserRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RegisteredUserJpaRepository extends RegisteredUserRepository, JpaRepository<User, String> {

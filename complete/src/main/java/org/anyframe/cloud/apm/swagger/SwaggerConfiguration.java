@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Predicate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +21,12 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @EnableSwagger2
 public class SwaggerConfiguration {
 
+    @Value(value = "${anyframe.cloud.apm.url-path}")
+    private String urlPath;
+
     @Bean
     public Predicate<String> swaggerPaths() {
-        return regex("/users.*|/sign.*|/log.*|/withdrawal.*|/cargo.*");
+        return regex(urlPath);
     }
 
     @Bean

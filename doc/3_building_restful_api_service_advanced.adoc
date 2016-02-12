@@ -310,10 +310,10 @@ public class SampleError {
 .ControllerAdvice 생성하기
 [source, Java]
 ----
-import org.anyframe.cloud.restservice.controller.dto.SampleError;
-import org.anyframe.cloud.restservice.controller.exception.UnavailableLoginNameException;
-import org.anyframe.cloud.restservice.controller.exception.UserNotFoundException;
-import org.anyframe.cloud.web.servlet.mvc.AbstractController;
+import SampleError;
+import UnavailableLoginNameException;
+import UserNotFoundException;
+import AbstractController;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

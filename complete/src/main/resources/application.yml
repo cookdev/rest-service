@@ -25,3 +25,8 @@ spring:
     hibernate:
       ddl-auto: none
     database-platform: org.hibernate.dialect.H2Dialect
+
+anyframe:
+  cloud:
+    apm:
+      url-path: /v1/users.*|/v2/users.*
