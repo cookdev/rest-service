@@ -19,10 +19,17 @@ Getting Started
 			<<section1-1-8>>
 
         <<section1-2>>::
+            <<section1-2-1>> +
+            <<section1-2-2>> +
+			<<section1-2-3>>
 
         <<section1-3>>::
 
         <<section1-4>>::
+
+        <<section1-5>>::
+
+        <<section1-6>>::
 
 ..... *<<outro>>*
 
@@ -123,7 +130,8 @@ Business Exception 설계는 API 설계 시 완료되어야 하는 부분이지�
 [NOTE]
 ====
 아래의 내용은 Spring 3.x 이하의 버전의 ExceptionHandler와 동일한 기능을 수행합니다. +
-하지만 사용하는 방법에 있어 차이가 있을 수 있습니다.
+본 Sample Project는 Spring Boot 및 Java configuration 기반으로 구현되므로 +
+사용하는 방법에 있어 차이가 있을 수 있습니다.
 ====
 
 .UserController.class
@@ -310,14 +318,13 @@ public class SampleError {
 .ControllerAdvice 생성하기
 [source, Java]
 ----
-import SampleError;
-import UnavailableLoginNameException;
-import UserNotFoundException;
-import AbstractController;
-import org.hibernate.exception.ConstraintViolationException;
+package org.anyframe.restservice.controller.handler;
+
+import org.anyframe.restservice.controller.dto.SampleError;
+import org.anyframe.restservice.controller.exception.UnavailableLoginNameException;
+import org.anyframe.web.servlet.mvc.AbstractController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -328,9 +335,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
-/**
- * Created by Hahn on 2016-01-21.
- */
 @ControllerAdvice(assignableTypes = {AbstractController.class})
 public class UserExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -357,6 +361,11 @@ public class UserExceptionHandler extends ResponseEntityExceptionHandler {
 . 기존에 UserController에 있던 @ExceptionHandler 메소드를 삭제합니다.
 . @ControllerAdvice Class 생성
 .. 일반적으로 모든 @RequestMapping 방법에 적용되는 @ExceptionHandler, @InitBinder, 및 @ModelAttribute 방법을 정의하는데 사용됩니다.
+.. 대상이 되는 Controller를 지정하는 방식은 아래와 같습니다.
+... String[] basePackages
+... Class<?>[] basePackageClasses
+... Class<?>[] assignableTypes
+... Class<? extends Annotation>[] annotations
 . @ExceptionHandler 메소드 구현
 .. ResponseEntityExceptionHandler를 상속하고 메소드에 @ResponseBody를 추가함으로써 Exception 처리 후 BasicErrorController를 거치지 않고 응답합니다.
 
@@ -364,6 +373,19 @@ public class UserExceptionHandler extends ResponseEntityExceptionHandler {
 ====
 @ControllerAdvice 대신 오류 메시지 타입을 재정의하는 또 다른 방법으로는 BasicErrorController를 상속하는 방법이 있습니다.
 ====
+
+
+.AbstractController 상속하기
+[source, Java]
+----
+import org.anyframe.web.servlet.mvc.AbstractController;
+
+public class UserController extends AbstractController {
+// 생략
+----
+* ControllerAdvice의 *"assignableTypes"* 속성을 이용하여 대상 컨트롤러를 지정했습니다.
+* 동일한 Exception Handling을 위해 Controller가 추가 될 때 마다 동일한 상위타입을 상속합니다.
+* 예> Version, 공통적인 BusinessException 처리 등
 
 [[section1-1-8]]
 ==== 1.(8) 오류처리 테스트
@@ -396,6 +418,7 @@ NOTE: 응답 메시지 타입이 변경된 것을 확인할 수 있습니다.
 ==== 2. CORS(Cross-Origin Resource Sharing)
 *_CORS는 Same-origin Policy를 우회 할 수 있는 W3C 표준 규약입니다.link:https://www.w3.org/TR/cors[(참고 문서)]_*
 
+[[section1-2-1]]
 ===== 2.(1) CORS Headers
 . Response Header
 .. Access-Control-Allow-Origin (required)
@@ -420,6 +443,7 @@ NOTE: 응답 메시지 타입이 변경된 것을 확인할 수 있습니다.
 .. Access-Control-Request-Method: 실제요청의 Http Method.
 .. Access-Control-Request-Headers: Non-simple Header('x-' 헤더와 같은)가 요청에 포함될 때 기재한다.
 
+[[section1-2-2]]
 ===== 2.(2) Preflight Request
 * 실제 요청 이전에 요청이 가능하지 허가받기 위한 사전요청
 * 복잡한 HTTP요청시에만 *OPTIONS* Method를 이용한 *_Preflight Request_*  한다.
@@ -432,6 +456,7 @@ NOTE: 응답 메시지 타입이 변경된 것을 확인할 수 있습니다.
 *** 기본 헤더 이외의 헤더를 보내려고 하거나,
 *** 응답으로 application/json 같은 타입을 사용하려고 할 때
 
+[[section1-2-3]]
 ===== 2.(3) Simple CORS Filter
 * *서버에서 CORS를 지원하기 위한 방법에는 여러가지가 있으며, 솔루션 전략에 따라 제공하는 방식이 조금씩 다를 수 있다*
 (쿠키를 공유한다던가, 특정 Header를 사용거나, Gateway가 존재하는 등).
@@ -495,7 +520,7 @@ NOTE: "OPTIONS"에 있는 if문은 HTTP Method Override를 위해 존재할 뿐 
 ....
 POST /users/1732 HTTP/1.1
 Content-Type: application/json
-x-http-method-override: PUT
+x-http-method-override: PUT-
 {
   "id":"1454509611497-1",
   "loginName":"test",
@@ -526,6 +551,21 @@ Content-Type: application/json
 [[section1-5]]
 ==== 5. OAuth 2.0 클라이언트로서의 API Service
 작성중입니다.
+
+[[section1-6]]
+==== 6. Swagger UI를 이용한 API Management
+
+[[section1-6-1]]
+==== 6.(1) Swagger UI 소개
+
+[[section1-6-2]]
+==== 6.(2) Swagger UI Dependency 추가하기
+
+[[section1-6-3]]
+==== 6.(3) Anyframe SwaggerConfiguration 소개
+
+[[section1-6-4]]
+==== 6.(4) Anyframe SwaggerConfiguration 적용하기
 
 
 // Page 구분

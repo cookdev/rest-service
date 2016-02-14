@@ -187,12 +187,12 @@ NOTE: API를 통해 서버의 자원을 제공한다는 관점에서 *Resource S
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.anyframe.cloud</groupId>
-	<artifactId>rest-service</artifactId>
+	<groupId>org.anyframe</groupId>
+	<artifactId>rest-service-initial</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>rest-service</name>
+	<name>rest-service-initial</name>
 	<description>Demo project for RESTful API Service</description>
 
 	<parent>
@@ -253,12 +253,12 @@ NOTE: JPA 및 H2DB, Liquibase 설정은 본 가이드에서 다루는 내용이 
 ==== 2.(2) Domain Class
 * 도메인 설계에 따라 Domain Class를 작성해보겠습니다.
 
-===== 2.(2).1) *_org.anyframe.cloud.restservice.domain.User_* Class를 생성
+===== 2.(2).1) *_org.anyframe.restservice.domain.User_* Class를 생성
 
 .User.class
 [source, java]
 ----
-package org.anyframe.cloud.restservice.domain;
+package org.anyframe.restservice.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -357,12 +357,12 @@ NOTE: @Entity, @Id, @Column, @Table은 JPA관련 Annotation 입니다.
 * 가이드 편의상 POST 요청에 대한 개발 가이드를 제공합니다.
 * 완성된 코드를 통해 PUT, DELETE, GET 소스를 확인하시길 바랍니다.
 
-===== 2.(3).1) *_org.anyframe.cloud.restservice.controller.UserContoller_* Class 생성
+===== 2.(3).1) *_org.anyframe.restservice.controller.UserContoller_* Class 생성
 
 .UserContoller.class
 [source, java]
 ----
-package org.anyframe.cloud.restservice.controller;
+package org.anyframe.restservice.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -408,12 +408,12 @@ NOTE: Userservice Complie 오류가 발생합니다.
 ==== 2.(4) Service Class
 * 실제로 Business Logic을 담당하는 서비스 클래스를 작성해보겠습니다.
 
-===== 2.(4).1) *_org.anyframe.cloud.restservice.service.UserService_* Interface 생성
+===== 2.(4).1) *_org.anyframe.restservice.service.UserService_* Interface 생성
 
 .UserService.class
 [source, java]
 ----
-package org.anyframe.cloud.restservice.service;
+package org.anyframe.restservice.service;
 
 import User;
 
@@ -424,12 +424,12 @@ public interface UserService {
 }
 ----
 
-===== 2.(4).2) *_org.anyframe.cloud.restservice.service.impl.UserServiceImpl_* Class 생성
+===== 2.(4).2) *_org.anyframe.restservice.service.impl.UserServiceImpl_* Class 생성
 
 .UserServiceImpl.class
 [source, java]
 ----
-package org.anyframe.cloud.restservice.service.impl;
+package org.anyframe.restservice.service.impl;
 
 import User;
 import RegisteredUserJpaRepository;
@@ -496,12 +496,12 @@ public class UserServiceImpl implements UserService {
 . 사용자 계정 DTO: UserAccount
   .. POST /user의 Response
 
-===== 2.(6).1) *_org.anyframe.cloud.restservice.controller.dto.RegisteredUser_* Class 생성
+===== 2.(6).1) *_org.anyframe.restservice.controller.dto.RegisteredUser_* Class 생성
 
 .RegisteredUser.class
 [source, java]
 ----
-package org.anyframe.cloud.restservice.controller.dto;
+package org.anyframe.restservice.controller.dto;
 
 public class RegisteredUser {
 
@@ -568,12 +568,12 @@ public class RegisteredUser {
 
 ----
 
-===== 2.(6).2) *_org.anyframe.cloud.restservice.controller.dto.UserAccount_* Class 생성
+===== 2.(6).2) *_org.anyframe.restservice.controller.dto.UserAccount_* Class 생성
 
 .UserAccount.class
 [source, java]
 ----
-package org.anyframe.cloud.restservice.controller.dto;
+package org.anyframe.restservice.controller.dto;
 
 public class UserAccount {
 
@@ -693,14 +693,14 @@ image::image_h2_console.png[title="H2 consle Login - Password 없음"]
 image::image_h2_console_select.png[title="H2 consle Query"]
 
 
-===== 2.(7).1) *_org.anyframe.cloud.restservice.repository.RegisteredUserRepository_* Class 생성
+===== 2.(7).1) *_org.anyframe.restservice.repository.RegisteredUserRepository_* Class 생성
 
 .RegisteredUserRepository.class
 [source, java]
 ----
-package org.anyframe.cloud.restservice.repository;
+package org.anyframe.restservice.repository;
 
-import User;
+import org.anyframe.restservice.domain.User;
 
 public interface RegisteredUserRepository {
 
@@ -714,15 +714,15 @@ public interface RegisteredUserRepository {
 ** link:http://docs.spring.io/spring-data/jpa/docs/1.3.0.RELEASE/reference/html/jpa.repositories.html[JPA Repository 참고]
 
 
-===== 2.(7).2) *_org.anyframe.cloud.restservice.repository.jpa.RegisteredUserJpaRepository_* Class 생성
+===== 2.(7).2) *_org.anyframe.restservice.repository.jpa.RegisteredUserJpaRepository_* Class 생성
 
 .RegisteredUserJpaRepository.class
 [source, java]
 ----
-package org.anyframe.cloud.restservice.repository.jpa;
+package org.anyframe.restservice.repository.jpa;
 
-import User;
-import RegisteredUserRepository;
+import org.anyframe.restservice.domain.User;
+import org.anyframe.restservice.repository.RegisteredUserRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RegisteredUserJpaRepository extends RegisteredUserRepository, JpaRepository<User, String> {
@@ -737,7 +737,7 @@ public interface RegisteredUserJpaRepository extends RegisteredUserRepository, J
 
 [[outro]]
 == Summary
-굉장히 간단한 Spring Boot 기반의 RESTfull API Service 구축을 실습했습니다. +
+간단한 Spring Boot 기반의 RESTfull API Service 구축을 실습했습니다. +
 link:3_building_restful_api_service_advanced.adoc[다음 가이드](link:3_building_restful_api_service_advanced.pdf[PDF])에서는
 실제 솔루션에서 사용하기 위한 API Service 필수기능 구현에 대해 알아보도록 하겠습니다. +
 

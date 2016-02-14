@@ -29,4 +29,4 @@ spring:
 anyframe:
   cloud:
     apm:
-      url-path: /v1/users.*|/v2/users.*
+      url-path: /v1/users.*|/v2/users.*|/users.*

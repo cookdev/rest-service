@@ -70,7 +70,7 @@ public class UserController extends AbstractController {
             @RequestParam(name = "offset", defaultValue = "1", required = false) int offset,
             @RequestParam(name = "limit", defaultValue ="10", required = false) int limit) {
 
-        Page<User> users = userService.getUsers(new PageRequest(offset/limit, limit));
+        Page<User> users = userService.getUsers(new PageRequest(this.convertOffsetToPage(offset, limit), limit));
 
         return users;
 
@@ -139,6 +139,14 @@ public class UserController extends AbstractController {
                 , dto.getFirstName()
                 , dto.getLastName());
         return newUser;
+    }
+
+    private int convertOffsetToPage(int offset, int limit){
+        if(offset < limit){
+            return 0;
+        }else{
+            return offset/limit;
+        }
     }
 
 }
