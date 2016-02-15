@@ -21,7 +21,7 @@ import java.util.List;
  * Created by Hahn on 2016-01-18.
  */
 @RestController
-//@RequestMapping(path = "/v2")
+@RequestMapping(path = "/v2")
 public class UserController extends AbstractController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);

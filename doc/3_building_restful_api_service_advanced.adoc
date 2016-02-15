@@ -34,7 +34,8 @@ Getting Started
             <<section1-6-2>> +
 			<<section1-6-3>> +
 			<<section1-6-4>> +
-			<<section1-6-5>>
+            <<section1-6-5>> +
+            <<section1-6-6>>
 
         <<section1-7>>::
             <<section1-7-1>>
@@ -601,7 +602,7 @@ Content-Type: application/json
 * Anyframe APM에는 아래와 같은 SwaggerConfiguration 파일이 존재합니다.
 
 .org.anyframe.cloud.apm.swagger.SwaggerConfiguration
-[source, xml]
+[source, java]
 ----
 @Configuration
 @EnableSwagger2
@@ -678,6 +679,73 @@ public class SwaggerConfiguration {
 
 ===== 6.(5).1) @ComponentScan 지정
 
+.org.anyframe.restservice.RestServiceApplication
+[source, java]
+----
+package org.anyframe.restservice;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@EnableAutoConfiguration
+@ComponentScan(
+		basePackages = {"org.anyframe.restservice",
+				"org.anyframe.cloud.apm.swagger",
+				"org.anyframe.web",
+				"org.anyframe.data.h2"
+		}
+)
+public class RestServiceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(RestServiceApplication.class, args);
+	}
+}
+----
+* @ComponentScan의 basePackages에 *"org.anyframe.cloud.apm.swagger"* 추가하여 Swagger Configuration을 적용합니다.
+
+===== 6.(5).1) REST API Info 지정
+
+.application.yml
+[source, yml]
+----
+anyframe:
+  cloud:
+    apm:
+      url-path: /v1/users.*|/v2/users.*|/users.*
+      title: Anyframe REST Service
+      description: RESTful API Service Sample Project
+      termsOfServiceUrl: www.anyframejava.org
+      contact: Anyframe
+      license: Samsung SDS
+      licenseUrl:
+      version: 2.0
+----
+.. url-path: Swagger UI에 노출 시킬 API의 Pattern을 정규식으로 표현합니다.
+.. title: REST Service의 이름
+.. description: REST Service에 대한 설명
+.. contact: Created by "OOO"
+
+
+[[section1-6-6]]
+==== 6.(6) Swagger UI 둘러보기
+
+===== 6.(6).1) Swagger UI Main
+====
+image::image_swagger_1.png[]
+====
+
+===== 6.(6).2) API Specification
+====
+image::image_swagger_2.png["API Specification"]
+====
+* API 호출이 가능합니다.
+
+
+
 [[section1-7]]
 ==== 7. Paging
 
@@ -688,6 +756,42 @@ public class SwaggerConfiguration {
 ==== 8. 부분 응답처리(컬럼 필터링)
 
 
+[[section1-9]]
+==== 9. API Version
+
+[[section1-9-1]]
+==== 9.(1) @RestController URL Mapping 지정하기
+
+.org.anyframe.restservice.controller.UserController
+[source, java]
+----
+@RestController
+@RequestMapping(path = "/v2")
+public class UserController extends AbstractController {
+    ...
+
+    @RequestMapping(value = "/users", method = {RequestMethod.POST})
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserAccount registerUser(@RequestBody RegisteredUser registerUser) {
+        ...
+    }
+    ...
+}
+----
+* Controller Class에 선언된 @RequestMapping은 메소드의 @RequestMapping에 상속 됩니다.
+* 즉, 버전은 컨트롤러 별로 지정하여 제공합니다.
+
+[caption="예> "]
+.이전 버전의 URL
+====
+POST /v1/users
+====
+
+[caption="예> "]
+.버전이 적용된 요청 URL
+====
+POST /users => POST /v2/users
+====
 
 // Page 구분
 <<<
