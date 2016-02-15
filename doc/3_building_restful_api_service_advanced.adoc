@@ -749,8 +749,68 @@ image::image_swagger_2.png["API Specification"]
 [[section1-7]]
 ==== 7. Paging
 
+페이징 처리 API를 구현합니다. offset과 limit 파라미터를 이용하여 페이지에 해당하는 데이터들을 전달합니다. +
+
+.Paging API
+|===
+|URL |Method |Request |Response
+
+|/users?offset={offset}&limit={limit} |GET |
+GET /users?offset={offset}&limit={limit} HTTP/1.1
+|
+HTTP/1.1 200 OK +
+{
+  "content": [
+    {
+      "id": "1",
+      "loginName": "park",
+      "emailAddress": "park@anyframecloud.org",
+      "firstName": "min",
+      "lastName": "park"
+    },
+    {
+      "id": "2",
+      "loginName": "david",
+      "emailAddress": "david@anyframecloud.org",
+      "firstName": "david",
+      "lastName": "silva"
+    },
+    {
+      "id": "3",
+      "loginName": "hong",
+      "emailAddress": "hong@anyframecloud.org",
+      "firstName": "hong",
+      "lastName": "lee"
+    }
+  ],
+  "pageable": {
+    "page": 0,
+    "size": 3,
+    "sort": null
+  },
+  "total": 10,
+  "last": false,
+  "first": false
+}
+
+[NOTE]
+====
+.`offset`
+여러 개의 데이터 중에서 몇번째 데이터부터 가져올 것인지를 정하는 파라미터
+
+.`limit`
+한 페이지에 불러올 데이터의 갯수
+
+.`total`
+모든 데이터의 총 갯수
+====
+
 [[section1-7-1]]
-==== 7.(1)
+==== 7.(1) Pagination
+
+.페이지 목록 아래의 `네비게이션` 을 클릭(이벤트 발생) 할 때마다 `Paging API` 서비스를 호출합니다.
+즉, offset과 limit 파라미터를 이용하여 현재 페이지에 해당하는 데이터 목록들을 가져옵니다.
+
 
 [[section1-8]]
 ==== 8. 부분 응답처리(컬럼 필터링)
