@@ -24,6 +24,27 @@ public class SwaggerConfiguration {
     @Value(value = "${anyframe.cloud.apm.url-path}")
     private String urlPath;
 
+    @Value(value = "${anyframe.cloud.apm.title}")
+    private String title;
+
+    @Value(value = "${anyframe.cloud.apm.description}")
+    private String description;
+
+    @Value(value = "${anyframe.cloud.apm.termsOfServiceUrl}")
+    private String termsOfServiceUrl;
+
+    @Value(value = "${anyframe.cloud.apm.contact}")
+    private String contact;
+
+    @Value(value = "${anyframe.cloud.apm.license}")
+    private String license;
+
+    @Value(value = "${anyframe.cloud.apm.licenseUrl}")
+    private String licenseUrl;
+
+    @Value(value = "${anyframe.cloud.apm.version}")
+    private String version;
+
     @Bean
     public Predicate<String> swaggerPaths() {
         return regex(urlPath);
@@ -31,10 +52,12 @@ public class SwaggerConfiguration {
 
     @Bean
     public ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("Cargo User API")
-                .description("Cargo Tracker User API")
-                .contact("Anyframe Cloud Edition")
-                .license("Anyframe Cloud Ed.").version("1.0").build();
+        return new ApiInfoBuilder().title(title)
+                .description(description)
+                .termsOfServiceUrl(termsOfServiceUrl)
+                .contact(contact)
+                .license(license).licenseUrl(licenseUrl)
+                .version(version).build();
     }
 
     @Bean

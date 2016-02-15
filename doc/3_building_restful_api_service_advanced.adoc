@@ -30,6 +30,16 @@ Getting Started
         <<section1-5>>::
 
         <<section1-6>>::
+            <<section1-6-1>> +
+            <<section1-6-2>> +
+			<<section1-6-3>> +
+			<<section1-6-4>> +
+			<<section1-6-5>>
+
+        <<section1-7>>::
+            <<section1-7-1>>
+
+        <<section1-8>>::
 
 ..... *<<outro>>*
 
@@ -554,18 +564,129 @@ Content-Type: application/json
 
 [[section1-6]]
 ==== 6. Swagger UI를 이용한 API Management
+* 본 가이드에서는 Spring 환경에서 가장 간단하게 Swagger를 사용할 수 있는 방법을 소개합니다.
+* Swagger UI와 Springfox를 기반으로 구현합니다.
 
 [[section1-6-1]]
 ==== 6.(1) Swagger UI 소개
+* link:http://swagger.io/[Swagger UI]는 REST API의 상세를 확인 할 수 있는 API Management 솔루션이자 툴입니다.
+* 별도의 소스코드, 문서 혹은 네트워크 트래픽을 통한 접근이 아닌 독립적인 인터페이스를 구축합니다.
 
 [[section1-6-2]]
-==== 6.(2) Swagger UI Dependency 추가하기
+==== 6.(2) Springfox 소개
+* link::http://springfox.github.io/springfox/docs/current[Springfox]는 Spring framework의 3th Party 오픈소스 라이브러리입니다.
+* Application 구동 시 한 번 검사를 통해 API 사양을 *자동으로* 문서화 합니다.
+* Spring Configuration, 클래스 구조, Java Annotation을 통해 API 사양을 생성합니다.
 
 [[section1-6-3]]
-==== 6.(3) Anyframe SwaggerConfiguration 소개
+==== 6.(3) Swagger UI Dependency 추가하기
+.pom.xml
+[source, xml]
+----
+<!-- for swagger2 ui-->
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger2</artifactId>
+    <version>2.1.2</version>
+</dependency>
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger-ui</artifactId>
+    <version>2.1.2</version>
+</dependency>
+----
 
 [[section1-6-4]]
-==== 6.(4) Anyframe SwaggerConfiguration 적용하기
+==== 6.(4) Anyframe SwaggerConfiguration 소개
+* Anyframe APM에는 아래와 같은 SwaggerConfiguration 파일이 존재합니다.
+
+.org.anyframe.cloud.apm.swagger.SwaggerConfiguration
+[source, xml]
+----
+@Configuration
+@EnableSwagger2
+public class SwaggerConfiguration {
+
+    @Value(value = "${anyframe.cloud.apm.url-path}")
+    private String urlPath;
+
+    @Value(value = "${anyframe.cloud.apm.title}")
+    private String title;
+
+    @Value(value = "${anyframe.cloud.apm.description}")
+    private String description;
+
+    @Value(value = "${anyframe.cloud.apm.termsOfServiceUrl}")
+    private String termsOfServiceUrl;
+
+    @Value(value = "${anyframe.cloud.apm.contact}")
+    private String contact;
+
+    @Value(value = "${anyframe.cloud.apm.license}")
+    private String license;
+
+    @Value(value = "${anyframe.cloud.apm.licenseUrl}")
+    private String licenseUrl;
+
+    @Value(value = "${anyframe.cloud.apm.version}")
+    private String version;
+
+    @Bean
+    public Predicate<String> swaggerPaths() {
+        return regex(urlPath);
+    }
+
+    @Bean
+    public ApiInfo apiInfo() {
+        return new ApiInfoBuilder().title(title)
+                .description(description)
+                .termsOfServiceUrl(termsOfServiceUrl)
+                .contact(contact)
+                .license(license).licenseUrl(licenseUrl)
+                .version(version).build();
+    }
+
+    @Bean
+    public Docket swaggerSpringMvcPlugin(Predicate<String> pathPredicate, ApiInfo apiInfo) {
+        return new Docket(DocumentationType.SWAGGER_2)
+        .apiInfo(apiInfo)
+        .select()
+        .paths(pathPredicate)
+        .build()
+        ;
+    }
+
+    @Bean
+    public ApplicationListener<ObjectMapperConfigured> configuredApplicationListener() {
+        return new ApplicationListener<ObjectMapperConfigured>() {
+            @Override
+            public void onApplicationEvent(ObjectMapperConfigured event) {
+                ObjectMapper om = event.getObjectMapper();
+                om.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+                om.setVisibilityChecker(om.getSerializationConfig().getDefaultVisibilityChecker()
+                        .withFieldVisibility(JsonAutoDetect.Visibility.ANY).
+                        withGetterVisibility(JsonAutoDetect.Visibility.NONE).
+                        withSetterVisibility(JsonAutoDetect.Visibility.NONE));
+            }
+        };
+    }
+}
+----
+
+[[section1-6-5]]
+==== 6.(5) Anyframe SwaggerConfiguration 적용하기
+
+===== 6.(5).1) @ComponentScan 지정
+
+[[section1-7]]
+==== 7. Paging
+
+[[section1-7-1]]
+==== 7.(1)
+
+[[section1-8]]
+==== 8. 부분 응답처리(컬럼 필터링)
+
 
 
 // Page 구분
