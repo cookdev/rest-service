@@ -760,38 +760,38 @@ offset과 limit 파라미터를 이용하여 페이지에 해당하는 데이터
 GET /users?offset={offset}&limit={limit} HTTP/1.1
 |
 HTTP/1.1 200 OK +
-{
-  "content": [
-    {
-      "id": "1",
-      "loginName": "park",
-      "emailAddress": "park@anyframecloud.org",
-      "firstName": "min",
-      "lastName": "park"
-    },
-    {
-      "id": "2",
-      "loginName": "david",
-      "emailAddress": "david@anyframecloud.org",
-      "firstName": "david",
-      "lastName": "silva"
-    },
-    {
-      "id": "3",
-      "loginName": "hong",
-      "emailAddress": "hong@anyframecloud.org",
-      "firstName": "hong",
-      "lastName": "lee"
-    }
-  ],
-  "pageable": {
-    "page": 0,
-    "size": 3,
-    "sort": null
-  },
-  "total": 10,
-  "last": false,
-  "first": false
+{ +
+{nbsp}{nbsp}"content": [ +
+{nbsp}{nbsp}{nbsp}{nbsp}{ + 
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"id": "1", +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"loginName": "park", +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"emailAddress": "park@anyframecloud.org", +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"firstName": "min", +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"lastName": "park" +
+{nbsp}{nbsp}{nbsp}{nbsp}}, +
+{nbsp}{nbsp}{nbsp}{nbsp}{ +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"id": "2", +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"loginName": "david", +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"emailAddress": "david@anyframecloud.org", +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"firstName": "david", +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"lastName": "silva" +
+{nbsp}{nbsp}{nbsp}{nbsp}}, +
+{nbsp}{nbsp}{nbsp}{nbsp}{ +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"id": "3", +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"loginName": "hong", +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"emailAddress": "hong@anyframecloud.org", +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"firstName": "hong", +
+{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}{nbsp}"lastName": "lee" +
+{nbsp}{nbsp}{nbsp}{nbsp}} +
+{nbsp}{nbsp}], +
+{nbsp}{nbsp}{nbsp}{nbsp}"pageable": { +
+{nbsp}{nbsp}{nbsp}{nbsp}"page": 0, +
+{nbsp}{nbsp}{nbsp}{nbsp}"size": 3, +
+{nbsp}{nbsp}{nbsp}{nbsp}"sort": null +
+{nbsp}{nbsp}{nbsp}{nbsp}}, +
+{nbsp}{nbsp}"total": 10, +
+{nbsp}{nbsp}"last": false, +
+{nbsp}{nbsp}"first": false +
 }
 
 |===
