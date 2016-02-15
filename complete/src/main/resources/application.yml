@@ -30,3 +30,10 @@ anyframe:
   cloud:
     apm:
       url-path: /v1/users.*|/v2/users.*|/users.*
+      title: Anyframe REST Service
+      description: RESTful API Service Sample Project
+      termsOfServiceUrl: www.anyframejava.org
+      contact: Anyframe
+      license: Samsung SDS
+      licenseUrl:
+      version: 2.0
