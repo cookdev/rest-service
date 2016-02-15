@@ -2,8 +2,16 @@
  * Created by Hahn on 2016-02-03.
  */
 var util = {
+    contextRoot: "http://localhost:8081",
+    apiVersion: {
+        v1: "/v1",
+        v2: "/v2"
+    },
     urlRoot: {
-        user: 'http://localhost:8081/users'
+        user: '/users'
+    },
+    makeUrl: function(version, root){
+        return this.contextRoot + this.apiVersion[version] + this.urlRoot[root]
     },
     headers: {
         "Content-Type": "application/json",

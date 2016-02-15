@@ -28,7 +28,7 @@ var UserService = (function() {
         }
         setUser(registerUser);
 
-        $.ajax(util.urlRoot.user, {
+        $.ajax(util.makeUrl('v2', "user"), {
             headers: util.headers,
             method: 'POST',
             data: util.jsonParser(user),
@@ -37,7 +37,7 @@ var UserService = (function() {
     };
 
     var getAllUserAccount = function(callback){
-        $.ajax(util.urlRoot.user + "/accounts", {
+        $.ajax(util.makeUrl('v2', "user") + "/accounts", {
             headers: util.headers,
             method: 'GET',
             complete: callback
@@ -45,7 +45,7 @@ var UserService = (function() {
     };
 
     var getUserListPagination = function(offset, limit, callback){
-        $.ajax(util.urlRoot.user, {
+        $.ajax(util.makeUrl('v2', "user"), {
             headers: util.headers,
             method: 'GET',
             data: {
@@ -60,7 +60,7 @@ var UserService = (function() {
         if(userId === undefined || userId === ""){
             throw "UserId is null";
         }
-        $.ajax(util.urlRoot.user + "/" + userId, {
+        $.ajax(util.makeUrl('v2', "user") + "/" + userId, {
             headers: util.headers,
             method: 'GET',
             complete: callback
@@ -73,7 +73,7 @@ var UserService = (function() {
         }
         setUser(registeredUser);
 
-        $.ajax(util.urlRoot.user + "/" + userId, {
+        $.ajax(util.makeUrl('v2', "user") + "/" + userId, {
             headers: util.headers,
             method: 'PUT',
             data: util.jsonParser(registeredUser),
@@ -86,7 +86,7 @@ var UserService = (function() {
             throw "UserId is null";
         }
 
-        $.ajax(util.urlRoot.user + "/" + userId, {
+        $.ajax(util.makeUrl('v2', "user") + "/" + userId, {
             headers: util.headers,
             method: 'DELETE',
             complete: callback
