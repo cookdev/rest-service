@@ -1,9 +1,15 @@
 /**
  * Created by Hahn on 2016-02-03.
  */
-var itemsPerPage = 3;
-
 var UserListView = (function(formId){
+
+    var pager = undefined;
+
+    $(formId).find('select#selectVersion').change(function(e){
+        //debugger;
+        $('#user-table > tbody').empty();
+        UserService.getUserListPagination(0, util.itemsPerPage);
+    });
 
     // public
     return {
@@ -17,31 +23,27 @@ var UserListView = (function(formId){
                 $('#user-table > tbody:last').append('<tr><th>'+item.id+'</th><th>'+item.loginName+'</th><th>'+item.emailAddress+'</th><th>'+item.firstName+'</th><th>'+item.lastName+'</th></tr>');
             });
 
-            pager = new Pager('user-table');
-            pager.init(result.total);
-            pager.showPageNav('pager', 'pageNavPosition');
+            if(pager === undefined){
+                pager = new Pager('user-table', result.total);
+            }
             pager.changeNav(result.pageable.page + 1);
         }
     }
 })("#formUserList");
 
 $(document).ready(function(){
-    UserService.getUserListPagination(0, itemsPerPage);
+    UserService.getUserListPagination(0, util.itemsPerPage);
 });
 
-function Pager(tableName){
+function Pager(tableName, totalCnt){
     this.currentPage = 1;
-    this.pages = 0;
-
-    this.init = function (totalCnt) {
-        this.pages = Math.ceil(totalCnt / itemsPerPage);
-    }
+    this.pages = Math.ceil(totalCnt / util.itemsPerPage);
 
     this.showPage = function (pageNumber) {
-        var from = (pageNumber - 1) * itemsPerPage;
+        var from = (pageNumber - 1) * util.itemsPerPage;
 
         $('#user-table > tbody').empty();
-        UserService.getUserListPagination(from, itemsPerPage);
+        UserService.getUserListPagination(from, util.itemsPerPage);
     }
 
     this.prev = function () {
@@ -56,25 +58,40 @@ function Pager(tableName){
         }
     }
 
-    this.showPageNav = function (pagerName, positionId) {
-        var element = document.getElementById(positionId);
+    this.showPageNav = function () {
+        var $pageNav = $("#pageNavPosition");
+        var that = this;
 
-        var pagerHtml = '<nav><ul class="pagination">'
-        pagerHtml += '<li><span onclick="' + pagerName + '.prev();">&laquo;</span></li>';
+        $pageNav.append('<nav><ul class="pagination"></ul></nav>')
+            .find(".pagination")
+                .append('<li><span id="pageNavPrev">&laquo;</span></li>');
+        $("#pageNavPrev").on('click', function(e){
+            that.prev();
+        });
+
         for (var page = 1; page <= this.pages; page++) {
-            pagerHtml += '<li class="pgNum" id="pg' + page + '"><span onclick="' + pagerName + '.showPage(' + page + ');">' + page + '</span></li>';
+            $pageNav.find(".pagination").append('<li class="pgNum"><span id="pg' + page + '">' + page + '</span></li>');
+
+            $("#pg"+page).on('click', function(e){
+                that.showPage($(this).text());
+            });
         }
-        pagerHtml += '<li><span onclick="' + pagerName + '.next();">&raquo;</span></li>';
-        pagerHtml += '</ul></nav>'
-        element.innerHTML = pagerHtml;
+
+        $pageNav.find(".pagination").append('<li><span id="pageNavNext">&raquo;</span></li>');
+
+        $("#pageNavNext").on('click', function(e){
+            that.next();
+        });
     }
 
     this.changeNav = function (pageNumber) {
-        var oldPageAnchor = document.getElementsByClassName('pgNum');
-        oldPageAnchor.className = '';
+        var $oldPageAnchor = $('.active');
+        $oldPageAnchor.removeClass('active');
 
         this.currentPage = pageNumber;
-        var newPageAnchor = document.getElementById('pg' + this.currentPage);
-        newPageAnchor.className = 'active';
+        var $newPageAnchor = $('#pg' + this.currentPage);
+        $newPageAnchor.parent('li').addClass('active');
     }
+
+    this.showPageNav();
 }

@@ -30,6 +30,12 @@ var UserView = (function(formId){
         UserService.setIsMethodOverride($(this).prop("checked"));
     });
 
+    $(formId).find('select#selectVersion').change(function(e){
+        // Noting to do
+        //var version = $(this).val();
+        //debugger;
+    });
+
     // public
     return {
         displayResult: function(result){

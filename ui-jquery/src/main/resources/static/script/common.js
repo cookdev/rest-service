@@ -10,12 +10,22 @@ var util = {
     urlRoot: {
         user: '/users'
     },
-    makeUrl: function(version, root){
-        return this.contextRoot + this.apiVersion[version] + this.urlRoot[root]
-    },
     headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
+    },
+    itemsPerPage: 3,
+
+    makeUrl: function(root){
+        var $version = $('select#selectVersion');
+        var version
+        if($version === undefined){
+            version = 'v2';
+        }else{
+            version = $version.val();
+        }
+
+        return this.contextRoot + this.apiVersion[version] + this.urlRoot[root]
     },
     isString: function(value) {
         return typeof value === 'string';

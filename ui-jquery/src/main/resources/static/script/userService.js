@@ -28,7 +28,7 @@ var UserService = (function() {
         }
         setUser(registerUser);
 
-        $.ajax(util.makeUrl('v2', "user"), {
+        $.ajax(util.makeUrl("user"), {
             headers: util.headers,
             method: 'POST',
             data: util.jsonParser(user),
@@ -37,7 +37,7 @@ var UserService = (function() {
     };
 
     var getAllUserAccount = function(callback){
-        $.ajax(util.makeUrl('v2', "user") + "/accounts", {
+        $.ajax(util.makeUrl("user") + "/accounts", {
             headers: util.headers,
             method: 'GET',
             complete: callback
@@ -45,7 +45,7 @@ var UserService = (function() {
     };
 
     var getUserListPagination = function(offset, limit, callback){
-        $.ajax(util.makeUrl('v2', "user"), {
+        $.ajax(util.makeUrl("user"), {
             headers: util.headers,
             method: 'GET',
             data: {
@@ -60,7 +60,7 @@ var UserService = (function() {
         if(userId === undefined || userId === ""){
             throw "UserId is null";
         }
-        $.ajax(util.makeUrl('v2', "user") + "/" + userId, {
+        $.ajax(util.makeUrl("user") + "/" + userId, {
             headers: util.headers,
             method: 'GET',
             complete: callback
@@ -73,7 +73,7 @@ var UserService = (function() {
         }
         setUser(registeredUser);
 
-        $.ajax(util.makeUrl('v2', "user") + "/" + userId, {
+        $.ajax(util.makeUrl("user") + "/" + userId, {
             headers: util.headers,
             method: 'PUT',
             data: util.jsonParser(registeredUser),
@@ -86,7 +86,7 @@ var UserService = (function() {
             throw "UserId is null";
         }
 
-        $.ajax(util.makeUrl('v2', "user") + "/" + userId, {
+        $.ajax(util.makeUrl("user") + "/" + userId, {
             headers: util.headers,
             method: 'DELETE',
             complete: callback
@@ -180,6 +180,7 @@ var UserService = (function() {
                     if("error" === textStatus){
                         UserListView.displayResult(util.fromJson(jqXHR.responseJSON));
                     }else{
+                        UserListView.displayResult(util.fromJson(jqXHR.responseJSON));
                         UserListView.setUserListPagination(jqXHR.responseJSON);
                     }
 
