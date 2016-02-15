@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Service</title>
+<link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="example get">
+        <div id = "totalCnt"></div>
+        <form class="form-horizontal" id="formUserList" >
+            <table class="table table-striped" id="user-table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>LoginName</th>
+                        <th>Email</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div id = "pageNavPosition">
+            </div>
+        </form>
+    </div>
+    <div class="example result hidden">
+        <div class="result-display">
+
+        </div>
+    </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="script/common.js"></script>
+<script type="text/javascript" src="script/userService.js"></script>
+<script type="text/javascript" src="script/userListView.js"></script>
+<script type="text/javascript">
+</script>
+</body>
+</html>

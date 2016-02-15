@@ -44,13 +44,13 @@ var UserService = (function() {
         });
     };
 
-    var getUserList = function(callback){
+    var getUserListPagination = function(offset, limit, callback){
         $.ajax(util.urlRoot.user, {
             headers: util.headers,
             method: 'GET',
             data: {
-                offset: 1,
-                limit: 1
+                offset: offset,
+                limit: limit
             },
             complete: callback
         });
@@ -172,7 +172,20 @@ var UserService = (function() {
 
             };
             removeUserById(userId, callback);
-        }
+        },
+
+        getUserListPagination: function(offset, limit, callback){
+            callback = callback || function(jqXHR, textStatus){
+                    jqXHR.responseJSON = jqXHR.responseJSON || textStatus
+                    if("error" === textStatus){
+                        UserListView.displayResult(util.fromJson(jqXHR.responseJSON));
+                    }else{
+                        UserListView.setUserListPagination(jqXHR.responseJSON);
+                    }
+
+                };
+            getUserListPagination(offset, limit, callback);
+        },
     }
 
 })();
