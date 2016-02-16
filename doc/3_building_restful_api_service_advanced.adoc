@@ -38,9 +38,13 @@ Getting Started
             <<section1-6-6>>
 
         <<section1-7>>::
-            <<section1-7-1>>
+            <<section1-7-1>> +
+            <<section1-7-2>>
 
         <<section1-8>>::
+
+        <<section1-9>>::
+            <<section1-9-1>> +
 
 ..... *<<outro>>*
 
@@ -326,7 +330,7 @@ public class SampleError {
 }
 ----
 
-.ControllerAdvice 생성하기
+.UserExceptionHandler 생성하기
 [source, Java]
 ----
 package org.anyframe.restservice.controller.handler;
@@ -475,7 +479,7 @@ NOTE: 응답 메시지 타입이 변경된 것을 확인할 수 있습니다.
 * 본 섹터에서는 Servlet Filter를 이용하여 일반적인 상황에서 CORS를 지원하기 위한 방법을 제공한다.
 
 
-.SimpleCORSFilter 구현하기
+.SimpleCORSFilter
 [source, Java]
 ----
 package org.anyframe.cloud.web.filter;
@@ -760,6 +764,11 @@ offset과 limit 파라미터를 이용하여 페이지에 해당하는 데이터
 GET /users?offset={offset}&limit={limit} HTTP/1.1
 |
 HTTP/1.1 200 OK +
+x-next-page-offset: 3 +
+x-next-page-limit: 3 +
+x-prev-page-offset: 0 +
+x-prev-page-limit:3 +
+
 { +
 {nbsp}{nbsp}"content": [ +
 {nbsp}{nbsp}{nbsp}{nbsp}{ + 
@@ -785,7 +794,7 @@ HTTP/1.1 200 OK +
 {nbsp}{nbsp}{nbsp}{nbsp}} +
 {nbsp}{nbsp}], +
 {nbsp}{nbsp}{nbsp}{nbsp}"pageable": { +
-{nbsp}{nbsp}{nbsp}{nbsp}"page": 0, +
+{nbsp}{nbsp}{nbsp}{nbsp}"page": 1, +
 {nbsp}{nbsp}{nbsp}{nbsp}"size": 3, +
 {nbsp}{nbsp}{nbsp}{nbsp}"sort": null +
 {nbsp}{nbsp}{nbsp}{nbsp}}, +
@@ -799,24 +808,70 @@ HTTP/1.1 200 OK +
 [NOTE]
 ====
 .`offset`
-여러 개의 데이터 중에서 몇번째 데이터부터 가져올 것인지를 정하는 파라미터
+여러 개의 데이터 중에서 몇번째 데이터부터 가져올 것인지를 정하는 파라미터(0부터 시작)
 
-.`limit`
+.`limit, size`
 한 페이지에 불러올 데이터의 개수
+
+.`page`
+limit 값을 기준으로 현재 페이지의 index 값(0부터 시작)
+
+.`sort`
+DESC, ASC 등의 정렬 기준(요청 값이 없으면 응답은 null)
 
 .`total`
 모든 데이터의 총 개수
+
+.`x-next-page-offset, x-next-page-limit`
+API 서버는 다음 페이지를 조회하기 위한 조건을 HTTP Header 값으로 지정해주며, 다음 페이지가 없을 시에는 헤더가 존재하지 않는다.
+
+.`x-prev-page-offset, x-prev-page-limit`
+API 서버는 이전 페이지를 조회하기 위한 조건을 HTTP Header 값으로 지정해주며, 이전 페이지가 없을 시에는 헤더가 존재하지 않는다.
+
 ====
 
 [[section1-7-1]]
-==== 7.(1) Pagination
+==== 7.(1) Pageable Controller
 
-.페이지 목록 아래의 `네비게이션` 을 클릭(이벤트 발생) 할 때마다 `Paging API` 서비스를 호출합니다.
-즉, offset과 limit 파라미터를 이용하여 현재 페이지에 해당하는 데이터 목록들을 가져옵니다. +
+.UserController.java
+[source, java]
+----
+@RestController
+@RequestMapping(path = "/v2")
+public class UserController extends AbstractController implements PageableController {
+    ...
+    @PageableRequest
+    @RequestMapping(value = "/users", method = {RequestMethod.GET})
+    @ResponseStatus(HttpStatus.OK)
+    public Page<User> getUsers(
+            @RequestParam(name = "offset", defaultValue = "1", required = false) int offset,
+            @RequestParam(name = "limit", defaultValue ="10", required = false) int limit) {
+    
+        Page<User> users = userService.getUsers(new PageRequest(this.convertOffsetToPage(offset, limit), limit));
+    
+        return users;
+    
+    }
+    ...
+}
+----
+.. QueryString으로 요청되는 Request Parameter를 @RequestParam으로 받습니다.
+.. Page 요청에 대한 Anyframe 공통 처리를 위한 기능
+... Interface를 구현합니다 ( *_org.anyframe.web.servlet.mvc.PageableController_* )
+... @PageableRequest를 메소드에 선언합니다 ( *_org.anyframe.web.annotation.PageableRequest_* )
+... org.anyframe.web.servlet.handler.PageableRequestAdvice 에서는 PageableController의 @PageableRequest 메소드에 대하여 +
+    HTTP Response Header에 x-next-page-offset, x-next-page-limit, x-prev-page-offset, x-prev-page-limit를 세팅합니다.
+
+[[section1-7-2]]
+==== 7.(2) UI Pagination
+
+.Sample UI Pagination Request, Response
+image::image_paging_1.png[]
 
 
 [[section1-8]]
 ==== 8. 부분 응답처리(컬럼 필터링)
+작성중입니다.
 
 
 [[section1-9]]
@@ -847,7 +902,7 @@ public class UserController extends AbstractController {
 [caption="예> "]
 .이전 버전의 URL
 ====
-POST /v1/users
+POST /users => POST /v1/users
 ====
 
 [caption="예> "]
@@ -862,11 +917,5 @@ POST /users => POST /v2/users
 
 [[outro]]
 == Summary
-link:consuming_a_restful_api_with_angularjs2.adoc[다음 가이드]에서는 API 클라이언트로써 간단한 UI Application 개발을 실습해보도록 하겠습니다.
 
-[NOTE]
-.아직 가이드에 추가되지 않은 내용입니다.
-====
-* Security
-* Oauth2.0
-====
+//link:consuming_a_restful_api_with_angularjs2.adoc[다음 가이드]에서는 API 클라이언트로써 간단한 UI Application 개발을 실습해보도록 하겠습니다.

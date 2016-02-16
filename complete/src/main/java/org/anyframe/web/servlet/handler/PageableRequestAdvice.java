@@ -2,6 +2,7 @@ package org.anyframe.web.servlet.handler;
 
 import org.anyframe.web.annotation.PageableRequest;
 import org.anyframe.web.servlet.mvc.AbstractController;
+import org.anyframe.web.servlet.mvc.PageableController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -18,7 +19,7 @@ import java.lang.annotation.Annotation;
 /**
  * Created by Hahn on 2016-01-21.
  */
-@ControllerAdvice(assignableTypes = {AbstractController.class})
+@ControllerAdvice(assignableTypes = {PageableController.class})
 public class PageableRequestAdvice implements ResponseBodyAdvice<Page<?>> {
 
     private static final Logger logger = LoggerFactory.getLogger(PageableRequestAdvice.class);
@@ -45,8 +46,8 @@ public class PageableRequestAdvice implements ResponseBodyAdvice<Page<?>> {
             serverHttpResponse.getHeaders().set("x-next-page-limit", String.valueOf(pageResponse.nextPageable().getPageSize()));
         }
         if(pageResponse.hasPrevious()) {
-            serverHttpResponse.getHeaders().set("x-previous-page-offset", String.valueOf(pageResponse.previousPageable().getOffset()));
-            serverHttpResponse.getHeaders().set("x-previous-page-limit", String.valueOf(pageResponse.previousPageable().getPageSize()));
+            serverHttpResponse.getHeaders().set("x-prev-page-offset", String.valueOf(pageResponse.previousPageable().getOffset()));
+            serverHttpResponse.getHeaders().set("x-prev-page-limit", String.valueOf(pageResponse.previousPageable().getPageSize()));
         }
         return pageResponse;
     }

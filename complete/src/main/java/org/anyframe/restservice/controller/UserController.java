@@ -6,6 +6,7 @@ import org.anyframe.restservice.domain.User;
 import org.anyframe.restservice.service.UserService;
 import org.anyframe.web.annotation.PageableRequest;
 import org.anyframe.web.servlet.mvc.AbstractController;
+import org.anyframe.web.servlet.mvc.PageableController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(path = "/v2")
-public class UserController extends AbstractController {
+public class UserController extends AbstractController implements PageableController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
