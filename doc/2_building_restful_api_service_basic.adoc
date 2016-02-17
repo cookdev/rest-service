@@ -1,6 +1,3 @@
-Getting Started
-~~~~~~~~~~~~~~
-
 = Building RESTful API Service
 
 == 목차

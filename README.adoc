@@ -1,8 +1,4 @@
-Getting Started
-~~~~~~~~~~~~~~
-
-Building RESTful API Service
-===========================
+= Building RESTful API Service
 
 == 목차
 . link:doc/1_design_restful_api.adoc[REST API 설계 가이드]

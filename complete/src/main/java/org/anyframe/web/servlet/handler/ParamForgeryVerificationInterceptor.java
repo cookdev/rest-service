@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * interceptor는 Response 객체를 참조하지 못하므로, @ControllerAdvice로 대체함.
  * 즉, 미사용 Interceptor이며, Interceptor 개발시 Java Configuration 참조를 위해 빈 내용으로 놔둡니다.
  */
-public class PageableInterceptor extends WebContentInterceptor {
+public class ParamForgeryVerificationInterceptor extends WebContentInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {

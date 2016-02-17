@@ -1,6 +1,3 @@
-Getting Started
-~~~~~~~~~~~~~~
-
 = Consuming a RESTful API Service with AngularJS2
 
 == 작성중입니다.

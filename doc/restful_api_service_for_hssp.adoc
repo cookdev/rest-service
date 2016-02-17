@@ -15,34 +15,6 @@
 			<<section1-1-7>> +
 			<<section1-1-8>>
 
-        <<section1-2>>::
-            <<section1-2-1>> +
-            <<section1-2-2>> +
-			<<section1-2-3>>
-
-        <<section1-3>>::
-
-        <<section1-4>>::
-
-        <<section1-5>>::
-
-        <<section1-6>>::
-            <<section1-6-1>> +
-            <<section1-6-2>> +
-			<<section1-6-3>> +
-			<<section1-6-4>> +
-            <<section1-6-5>> +
-            <<section1-6-6>>
-
-        <<section1-7>>::
-            <<section1-7-1>> +
-            <<section1-7-2>>
-
-        <<section1-8>>::
-
-        <<section1-9>>::
-            <<section1-9-1>> +
-
 ..... *<<outro>>*
 
 
@@ -53,21 +25,11 @@
 
 [[intro]]
 == Introduce
-*Spring Boot 기반의 link:http://spring.io/understanding/REST[REST] API 서비스 구축을 위한 레퍼런스 문서입니다.*
-
-NOTE: RESTful API 설계 가이드는 link:1_design_restful_api.adoc[REST API 설계 가이드](link:1_design_restful_api.pdf[PDF])를 참조 바랍니다.
+*HSSP 솔루션을 위해 Anyframe 표준에 추가적으로 제공되는 기능에 대한 가이드 문서입니다.*
 
 === Features
-* 오류처리에 대한 방법이 있습니다.
-* link:https://www.w3.org/TR/cors[CORS(Cross-Origin Resource Sharing)]를 위한 해결책이 있습니다.
-* 사용자 인증을 위해 link:http://oauth.net/2/[Oauth2.0] Client로써의 API Service를 구축합니다.
-
-=== Need
-* 약 15분의 시간
-* Maven 3.0+
-* java 7+
-* IDE
-
+* 파라미터 변조를 방지하기 위한 보안 대책
+* 202 Accepted 에 대한 Call Back URL
 
 // Page 구분
 <<<
