@@ -13,7 +13,7 @@ public class SimpleCORSFilter implements Filter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, OPTIONS, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, x-http-method-override");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, x-http-method-override, x-created-at, x-hash");
         if(!"OPTIONS".equals(request.getMethod())){
             chain.doFilter(req, res);
         }

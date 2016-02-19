@@ -1,6 +1,7 @@
 package org.anyframe.web.servlet;
 
 import org.anyframe.web.config.FilterConfiguration;
+import org.anyframe.web.servlet.handler.ParamForgeryVerificationInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -13,7 +14,7 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new PageableInterceptor());
+//        registry.addInterceptor(new ParamForgeryVerificationInterceptor());
     }
 
     @Override
